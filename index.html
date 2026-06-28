@@ -7,1098 +7,889 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" />
+  <script src="questions.js"></script>
   <style>
     :root {
-      --font-sans: 'Inter', system-ui, sans-serif;
-      --font-mono: 'Menlo', 'Consolas', monospace;
-      --radius: 8px;
-      --surface-0: #f5f5f2;
-      --surface-1: #efefeb;
-      --surface-2: #ffffff;
-      --border: rgba(0,0,0,0.1);
-      --border-strong: rgba(0,0,0,0.18);
-      --border-accent: #378ADD;
-      --border-success: #639922;
-      --border-danger: #E24B4A;
-      --border-warning: #BA7517;
-      --text-primary: #1a1a18;
-      --text-secondary: #5f5e5a;
-      --text-muted: #888780;
-      --text-accent: #185FA5;
-      --text-success: #3B6D11;
-      --text-danger: #A32D2D;
-      --text-warning: #854F0B;
-      --text-pro: #3C3489;
-      --bg-accent: #E6F1FB;
-      --bg-success: #EAF3DE;
-      --bg-danger: #FCEBEB;
-      --bg-warning: #FAEEDA;
-      --bg-pro: #EEEDFE;
-      --fill-accent: #378ADD;
-      --fill-accent-hover: #185FA5;
-      --fill-success: #639922;
-      --fill-danger: #E24B4A;
-      --fill-warning: #EF9F27;
-      --fill-pro: #7F77DD;
-      --on-accent: #ffffff;
-      --on-success: #1a2e05;
+      --font:'Inter',system-ui,sans-serif; --mono:'Menlo','Consolas',monospace; --r:8px;
+      --s0:#f0efea; --s1:#e8e7e2; --s2:#ffffff;
+      --bd:rgba(0,0,0,0.1); --bdx:rgba(0,0,0,0.18);
+      --tp:#1a1a18; --ts:#5f5e5a; --tm:#888780;
+      --ta:#185FA5; --tg:#3B6D11; --td:#A32D2D; --tw:#854F0B; --tpr:#3C3489;
+      --ba:#E6F1FB; --bgs:#EAF3DE; --bds:#C0DD97;
+      --bdd:#F09595; --bgd:#FCEBEB;
+      --bgw:#FAEEDA; --bdw:#FAC775;
+      --fa:#378ADD; --fah:#185FA5;
+      --fg:#639922; --fd:#E24B4A; --fw:#EF9F27; --fpr:#7F77DD;
     }
-
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --surface-0: #1a1a18;
-        --surface-1: #222220;
-        --surface-2: #2c2c2a;
-        --border: rgba(255,255,255,0.1);
-        --border-strong: rgba(255,255,255,0.18);
-        --text-primary: #f0efea;
-        --text-secondary: #b4b2a9;
-        --text-muted: #888780;
-        --bg-accent: #042C53;
-        --bg-success: #173404;
-        --bg-danger: #501313;
-        --bg-warning: #412402;
-        --bg-pro: #26215C;
-      }
+    @media(prefers-color-scheme:dark){
+      :root{--s0:#1a1a18;--s1:#222220;--s2:#2c2c2a;
+        --bd:rgba(255,255,255,0.1);--bdx:rgba(255,255,255,0.18);
+        --tp:#f0efea;--ts:#b4b2a9;
+        --ba:#042C53;--bgs:#173404;--bgd:#501313;--bgw:#412402;}
     }
-
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      font-family: var(--font-sans);
-      background: var(--surface-0);
-      color: var(--text-primary);
-      font-size: 14px;
-      line-height: 1.5;
-      min-height: 100vh;
-    }
-
-    .container {
-      max-width: 720px;
-      margin: 0 auto;
-      padding: 0 16px 40px;
-    }
-
-    .app { min-height: 100vh; }
-    .screen { display: none; }
-    .screen.active { display: block; }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:var(--font);background:var(--s0);color:var(--tp);font-size:14px;line-height:1.5;min-height:100vh}
+    .wrap{max-width:720px;margin:0 auto;padding:0 16px 60px}
+    .screen{display:none}.screen.active{display:block}
 
     /* NAV */
-    .nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 14px 0 12px;
-      border-bottom: 0.5px solid var(--border);
-      margin-bottom: 1.25rem;
-      position: sticky;
-      top: 0;
-      background: var(--surface-0);
-      z-index: 10;
-    }
-    .nav-logo { font-size: 16px; font-weight: 600; color: var(--text-primary); }
-    .nav-logo span { color: var(--fill-accent); }
-    .nav-tabs { display: flex; gap: 3px; }
-    .nav-tab {
-      padding: 5px 10px;
-      border-radius: 20px;
-      font-size: 12px;
-      cursor: pointer;
-      border: 0.5px solid transparent;
-      color: var(--text-muted);
-      background: none;
-      font-family: var(--font-sans);
-    }
-    .nav-tab.active {
-      background: var(--surface-2);
-      border-color: var(--border);
-      color: var(--text-primary);
-      font-weight: 500;
-    }
-    .xp-badge { font-size: 12px; color: var(--text-warning); font-weight: 500; display: flex; align-items: center; gap: 4px; }
+    .nav{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:.5px solid var(--bd);margin-bottom:1.25rem;position:sticky;top:0;background:var(--s0);z-index:10}
+    .logo{font-size:16px;font-weight:600}.logo span{color:var(--fa)}
+    .tabs{display:flex;gap:3px}
+    .tab{padding:5px 10px;border-radius:20px;font-size:12px;cursor:pointer;border:.5px solid transparent;color:var(--tm);background:none;font-family:var(--font)}
+    .tab.on{background:var(--s2);border-color:var(--bd);color:var(--tp);font-weight:500}
+    .xpb{font-size:12px;color:var(--tw);font-weight:500;display:flex;align-items:center;gap:4px}
 
-    /* STAT CARDS */
-    .dash-stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin-bottom: 1rem; }
-    .sc { background: var(--surface-1); border-radius: var(--radius); padding: 0.75rem; text-align: center; }
-    .sc-n { font-size: 20px; font-weight: 500; color: var(--text-primary); }
-    .sc-n.g { color: var(--text-success); }
-    .sc-n.b { color: var(--text-accent); }
-    .sc-n.a { color: var(--text-warning); }
-    .sc-n.r { color: var(--text-danger); }
-    .sc-l { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+    /* GRID */
+    .g4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:1rem}
+    .g2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:1rem}
+    .sc{background:var(--s1);border-radius:var(--r);padding:.75rem;text-align:center}
+    .sn{font-size:20px;font-weight:500}.sl{font-size:10px;color:var(--tm);margin-top:2px}
+    .sn.g{color:var(--tg)}.sn.b{color:var(--ta)}.sn.a{color:var(--tw)}.sn.r{color:var(--td)}
+
+    .card{background:var(--s2);border:.5px solid var(--bd);border-radius:12px;padding:1rem;margin-bottom:1rem}
+    .card-title{font-size:13px;font-weight:500;margin-bottom:10px}
 
     /* SOURCE PILLS */
-    .source-legend { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 1rem; }
-    .src-pill { font-size: 10px; padding: 3px 8px; border-radius: 10px; font-weight: 500; border: 0.5px solid; }
-    .src-rsa { background: #E6F1FB; color: #0C447C; border-color: #B5D4F4; }
-    .src-ry  { background: #EEEDFE; color: #3C3489; border-color: #CECBF6; }
-    .src-mkp { background: #FAEEDA; color: #633806; border-color: #FAC775; }
-    .src-spb { background: #EAF3DE; color: #27500A; border-color: #C0DD97; }
-    .src-luc { background: #FAECE7; color: #712B13; border-color: #F5C4B3; }
-    .src-tb  { background: #FCEBEB; color: #791F1F; border-color: #F7C1C1; }
-    .src-pyq { background: #F1EFE8; color: #444441; border-color: #D3D1C7; }
+    .src{font-size:10px;padding:3px 8px;border-radius:10px;font-weight:500;border:.5px solid;display:inline-block}
+    .rsa{background:#E6F1FB;color:#0C447C;border-color:#B5D4F4}
+    .ry{background:#EEEDFE;color:#3C3489;border-color:#CECBF6}
+    .mkp{background:#FAEEDA;color:#633806;border-color:#FAC775}
+    .spb{background:#EAF3DE;color:#27500A;border-color:#C0DD97}
+    .luc{background:#FAECE7;color:#712B13;border-color:#F5C4B3}
+    .tb{background:#FCEBEB;color:#791F1F;border-color:#F7C1C1}
+    .pyq{background:#F1EFE8;color:#444441;border-color:#D3D1C7}
 
-    /* SECTION BARS */
-    .sec-bars { background: var(--surface-2); border: 0.5px solid var(--border); border-radius: 12px; padding: 1rem; margin-bottom: 1rem; }
-    .sec-bars-title { font-size: 13px; font-weight: 500; margin-bottom: 10px; }
-    .sb-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
-    .sb-name { font-size: 12px; color: var(--text-secondary); width: 110px; flex-shrink: 0; }
-    .sb-bg { flex: 1; height: 6px; background: var(--surface-1); border-radius: 3px; overflow: hidden; }
-    .sb-fill { height: 100%; border-radius: 3px; }
-    .sb-pct { font-size: 11px; color: var(--text-muted); width: 30px; text-align: right; }
+    /* BARS */
+    .bars .row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+    .bars .nm{font-size:12px;color:var(--ts);width:140px;flex-shrink:0}
+    .bars .bg{flex:1;height:6px;background:var(--s1);border-radius:3px;overflow:hidden}
+    .bars .fi{height:100%;border-radius:3px}
+    .bars .pt{font-size:11px;color:var(--tm);width:32px;text-align:right}
 
     /* TREND */
-    .trend-wrap { background: var(--surface-2); border: 0.5px solid var(--border); border-radius: 12px; padding: 1rem; margin-bottom: 1rem; }
-    .trend-title { font-size: 13px; font-weight: 500; margin-bottom: 10px; }
-    .chart-bars { display: flex; align-items: flex-end; gap: 3px; height: 70px; }
-    .cb { flex: 1; border-radius: 3px 3px 0 0; min-height: 4px; }
-    .chart-lbls { display: flex; gap: 3px; margin-top: 4px; }
-    .cl { flex: 1; text-align: center; font-size: 9px; color: var(--text-muted); }
+    .chart{display:flex;align-items:flex-end;gap:3px;height:70px}
+    .cb{flex:1;border-radius:3px 3px 0 0;min-height:4px}
+    .cl{flex:1;text-align:center;font-size:9px;color:var(--tm);margin-top:4px}
 
     /* PLAN */
-    .plan-box { background: var(--surface-2); border: 0.5px solid var(--border); border-radius: 12px; padding: 1rem; margin-bottom: 1rem; }
-    .plan-title { font-size: 13px; font-weight: 500; margin-bottom: 8px; }
-    .plan-row { display: flex; align-items: center; gap: 8px; padding: 6px 0; border-bottom: 0.5px solid var(--border); }
-    .plan-row:last-child { border-bottom: none; }
-    .plan-cb { width: 16px; height: 16px; border-radius: 3px; border: 0.5px solid var(--border-strong); cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 10px; }
-    .plan-cb.done { background: var(--fill-success); border-color: var(--fill-success); color: white; }
-    .plan-txt { font-size: 12px; flex: 1; }
-    .plan-txt.done { text-decoration: line-through; color: var(--text-muted); }
+    .plan-row{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:.5px solid var(--bd)}
+    .plan-row:last-child{border-bottom:none}
+    .pcb{width:16px;height:16px;border-radius:3px;border:.5px solid var(--bdx);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:10px}
+    .pcb.done{background:var(--fg);border-color:var(--fg);color:#fff}
+    .pt2{font-size:12px;flex:1}.pt2.done{text-decoration:line-through;color:var(--tm)}
 
-    /* QUICK GRID */
-    .quick-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 1rem; }
-    .qc { background: var(--surface-2); border: 0.5px solid var(--border); border-radius: 12px; padding: 0.85rem; cursor: pointer; }
-    .qc:hover { border-color: var(--border-strong); }
-    .qc-title { font-size: 13px; font-weight: 500; }
-    .qc-sub { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+    /* XP */
+    .xpbar{background:var(--s1);border-radius:3px;height:4px;margin-bottom:.75rem;overflow:hidden}
+    .xpfill{height:100%;border-radius:3px;background:var(--fw);transition:width .5s}
+    .xplbl{font-size:11px;color:var(--tm);display:flex;justify-content:space-between;margin-bottom:4px}
 
-    /* XP BAR */
-    .xp-bar-wrap { background: var(--surface-1); border-radius: 3px; height: 4px; margin-bottom: 0.75rem; overflow: hidden; }
-    .xp-bar-fill { height: 100%; border-radius: 3px; background: var(--fill-warning); transition: width 0.5s; }
-    .xp-label { font-size: 11px; color: var(--text-muted); margin-bottom: 4px; display: flex; justify-content: space-between; }
+    /* QUICK CARDS */
+    .qc{background:var(--s2);border:.5px solid var(--bd);border-radius:12px;padding:.85rem;cursor:pointer}
+    .qc:hover{border-color:var(--bdx)}
+    .qct{font-size:13px;font-weight:500}.qcs{font-size:11px;color:var(--tm);margin-top:2px}
 
-    /* PRACTICE */
-    .mode-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 1rem; }
-    .mc { background: var(--surface-2); border: 0.5px solid var(--border); border-radius: 12px; padding: 0.85rem; cursor: pointer; text-align: center; }
-    .mc:hover { border-color: var(--border-strong); }
-    .mc.sel { border: 2px solid var(--border-accent); }
-    .mc-icon { font-size: 20px; margin-bottom: 5px; }
-    .mc-name { font-size: 13px; font-weight: 500; }
-    .mc-desc { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+    /* LEGEND */
+    .legend{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1rem}
 
-    .pill-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 0.85rem; }
-    .pill { padding: 4px 10px; border: 0.5px solid var(--border); border-radius: 20px; font-size: 12px; cursor: pointer; color: var(--text-secondary); background: var(--surface-2); }
-    .pill.on { background: var(--fill-accent); color: #fff; border-color: var(--fill-accent); }
+    /* MODE */
+    .mc{background:var(--s2);border:.5px solid var(--bd);border-radius:12px;padding:.85rem;cursor:pointer;text-align:center}
+    .mc:hover{border-color:var(--bdx)}.mc.sel{border:2px solid var(--fa)}
+    .mci{font-size:20px;margin-bottom:5px}.mcn{font-size:13px;font-weight:500}.mcd{font-size:11px;color:var(--tm);margin-top:2px}
 
-    .filter-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 0.75rem; }
-    .fl { font-size: 12px; color: var(--text-muted); }
+    /* PILLS */
+    .pills{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:.85rem}
+    .pill{padding:4px 10px;border:.5px solid var(--bd);border-radius:20px;font-size:12px;cursor:pointer;color:var(--ts);background:var(--s2)}
+    .pill.on{background:var(--fa);color:#fff;border-color:var(--fa)}
 
-    select {
-      padding: 5px 8px;
-      border-radius: var(--radius);
-      border: 0.5px solid var(--border);
-      font-size: 12px;
-      background: var(--surface-2);
-      color: var(--text-primary);
-      cursor: pointer;
-      font-family: var(--font-sans);
-    }
+    /* FILTERS */
+    .frow{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:.75rem}
+    .fl{font-size:12px;color:var(--tm)}
+    select{padding:5px 8px;border-radius:var(--r);border:.5px solid var(--bd);font-size:12px;background:var(--s2);color:var(--tp);cursor:pointer;font-family:var(--font)}
 
-    .start-btn {
-      width: 100%;
-      padding: 11px;
-      background: var(--fill-accent);
-      color: #fff;
-      border: none;
-      border-radius: var(--radius);
-      font-size: 14px;
-      font-weight: 500;
-      cursor: pointer;
-      margin-top: 0.5rem;
-      font-family: var(--font-sans);
-    }
-    .start-btn:hover { background: var(--fill-accent-hover); }
+    /* BUTTONS */
+    .btn-start{width:100%;padding:11px;background:var(--fa);color:#fff;border:none;border-radius:var(--r);font-size:14px;font-weight:500;cursor:pointer;margin-top:.5rem;font-family:var(--font)}
+    .btn-start:hover{background:var(--fah)}
+    .bpri{flex:1;padding:8px;background:var(--fa);border:none;border-radius:var(--r);font-size:13px;cursor:pointer;color:#fff;font-weight:500;font-family:var(--font)}
+    .bpri:hover{background:var(--fah)}
+    .bsec{flex:1;padding:8px;background:var(--s2);border:.5px solid var(--bdx);border-radius:var(--r);font-size:13px;cursor:pointer;color:var(--tp);font-family:var(--font)}
+    .btn-rm{padding:4px 10px;border-radius:var(--r);border:.5px solid var(--bd);font-size:11px;cursor:pointer;background:var(--s2);color:var(--ts);font-family:var(--font);margin-top:6px}
 
     /* QUIZ */
-    .qhdr { display: flex; align-items: center; justify-content: space-between; padding-bottom: 10px; border-bottom: 0.5px solid var(--border); margin-bottom: 0.85rem; }
-    .qmeta { display: flex; align-items: center; gap: 6px; }
-    .qnum { font-size: 12px; color: var(--text-muted); }
-    .stag { font-size: 10px; padding: 2px 7px; border-radius: 10px; font-weight: 500; }
-    .tbox { display: flex; align-items: center; gap: 4px; font-size: 13px; font-weight: 500; background: var(--surface-1); border: 0.5px solid var(--border); padding: 4px 10px; border-radius: var(--radius); }
-    .tbox.warn { color: var(--text-warning); border-color: var(--border-warning); }
-    .tbox.danger { color: var(--text-danger); border-color: var(--border-danger); background: var(--bg-danger); }
-
-    .pbar { background: var(--surface-1); border-radius: 3px; height: 3px; margin-bottom: 0.85rem; overflow: hidden; }
-    .pfill { height: 100%; border-radius: 3px; background: var(--fill-accent); transition: width 0.3s; }
-
-    .qcard { background: var(--surface-2); border: 0.5px solid var(--border); border-radius: 12px; padding: 1rem; margin-bottom: 0.75rem; }
-    .qmeta-row { display: flex; align-items: center; gap: 6px; margin-bottom: 7px; flex-wrap: wrap; }
-    .qtxt { font-size: 14px; line-height: 1.65; }
-    .bm-btn { margin-left: auto; cursor: pointer; font-size: 15px; color: var(--text-muted); background: none; border: none; padding: 0; }
-    .bm-btn.saved { color: var(--text-warning); }
-
-    .opts { display: flex; flex-direction: column; gap: 6px; margin-bottom: 0.75rem; }
-    .opt {
-      background: var(--surface-2);
-      border: 0.5px solid var(--border);
-      border-radius: var(--radius);
-      padding: 8px 12px;
-      cursor: pointer;
-      display: flex;
-      align-items: flex-start;
-      gap: 8px;
-      font-size: 13px;
-      color: var(--text-primary);
-      line-height: 1.5;
-      text-align: left;
-      width: 100%;
-      font-family: var(--font-sans);
-    }
-    .opt:hover:not(:disabled) { border-color: var(--border-accent); }
-    .opt.correct { border: 2px solid var(--border-success); background: var(--bg-success); color: var(--text-success); }
-    .opt.wrong { border: 2px solid var(--border-danger); background: var(--bg-danger); color: var(--text-danger); }
-    .opt-l { font-weight: 500; font-size: 12px; min-width: 16px; flex-shrink: 0; }
-
-    .sol-box { border: 0.5px solid var(--border-success); border-radius: var(--radius); padding: 0.75rem; margin-bottom: 0.75rem; background: var(--surface-1); }
-    .sol-lbl { font-size: 10px; font-weight: 500; color: var(--text-success); text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 4px; }
-    .sol-src { font-size: 10px; color: var(--text-muted); margin-bottom: 4px; }
-    .sol-txt { font-size: 12px; color: var(--text-secondary); line-height: 1.6; }
-    .trick-box { background: var(--bg-warning); border: 0.5px solid var(--border-warning); border-radius: var(--radius); padding: 0.6rem 0.75rem; margin-top: 6px; }
-    .trick-lbl { font-size: 10px; font-weight: 500; color: var(--text-warning); text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 3px; }
-    .trick-txt { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
-
-    .neg-hint { background: var(--bg-danger); border: 0.5px solid var(--border-danger); border-radius: var(--radius); padding: 5px 10px; font-size: 11px; color: var(--text-danger); margin-bottom: 0.75rem; }
-    .qacts { display: flex; gap: 6px; }
-    .bsec { flex: 1; padding: 8px; background: var(--surface-2); border: 0.5px solid var(--border-strong); border-radius: var(--radius); font-size: 13px; cursor: pointer; color: var(--text-primary); font-family: var(--font-sans); }
-    .bpri { flex: 1; padding: 8px; background: var(--fill-accent); border: none; border-radius: var(--radius); font-size: 13px; cursor: pointer; color: #fff; font-weight: 500; font-family: var(--font-sans); }
-    .bpri:hover { background: var(--fill-accent-hover); }
-
-    .confetti-msg { text-align: center; padding: 0.4rem; font-size: 13px; font-weight: 500; color: var(--text-success); background: var(--bg-success); border-radius: var(--radius); margin-bottom: 0.75rem; display: none; }
+    .qhdr{display:flex;align-items:center;justify-content:space-between;padding-bottom:10px;border-bottom:.5px solid var(--bd);margin-bottom:.85rem}
+    .qmeta{display:flex;align-items:center;gap:6px}
+    .qnum{font-size:12px;color:var(--tm)}
+    .tbox{display:flex;align-items:center;gap:4px;font-size:13px;font-weight:500;background:var(--s1);border:.5px solid var(--bd);padding:4px 10px;border-radius:var(--r)}
+    .tbox.warn{color:var(--tw);border-color:var(--bdw)}.tbox.danger{color:var(--td);border-color:var(--bdd);background:var(--bgd)}
+    .pbar{background:var(--s1);border-radius:3px;height:3px;margin-bottom:.85rem;overflow:hidden}
+    .pfill{height:100%;border-radius:3px;background:var(--fa);transition:width .3s}
+    .qcard{background:var(--s2);border:.5px solid var(--bd);border-radius:12px;padding:1rem;margin-bottom:.75rem}
+    .qmr{display:flex;align-items:center;gap:6px;margin-bottom:7px;flex-wrap:wrap}
+    .qtxt{font-size:14px;line-height:1.65}
+    .bmb{margin-left:auto;cursor:pointer;font-size:15px;color:var(--tm);background:none;border:none;padding:0}
+    .bmb.sv{color:var(--tw)}
+    .opts{display:flex;flex-direction:column;gap:6px;margin-bottom:.75rem}
+    .opt{background:var(--s2);border:.5px solid var(--bd);border-radius:var(--r);padding:8px 12px;cursor:pointer;display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--tp);line-height:1.5;text-align:left;width:100%;font-family:var(--font)}
+    .opt:hover:not(:disabled){border-color:var(--fa)}
+    .opt.correct{border:2px solid var(--bds);background:var(--bgs);color:var(--tg)}
+    .opt.wrong{border:2px solid var(--bdd);background:var(--bgd);color:var(--td)}
+    .optl{font-weight:500;font-size:12px;min-width:16px;flex-shrink:0}
+    .sol{border:.5px solid var(--bds);border-radius:var(--r);padding:.75rem;margin-bottom:.75rem;background:var(--s1)}
+    .sol-lbl{font-size:10px;font-weight:500;color:var(--tg);text-transform:uppercase;letter-spacing:.3px;margin-bottom:4px}
+    .sol-src{font-size:10px;color:var(--tm);margin-bottom:4px}
+    .sol-txt{font-size:12px;color:var(--ts);line-height:1.6}
+    .trick{background:var(--bgw);border:.5px solid var(--bdw);border-radius:var(--r);padding:.6rem .75rem;margin-top:6px}
+    .trick-lbl{font-size:10px;font-weight:500;color:var(--tw);text-transform:uppercase;letter-spacing:.3px;margin-bottom:3px}
+    .trick-txt{font-size:12px;color:var(--ts);line-height:1.5}
+    .neg{background:var(--bgd);border:.5px solid var(--bdd);border-radius:var(--r);padding:5px 10px;font-size:11px;color:var(--td);margin-bottom:.75rem}
+    .qacts{display:flex;gap:6px}
+    .conf{text-align:center;padding:4px;font-size:12px;font-weight:500;color:var(--tg);background:var(--bgs);border-radius:var(--r);margin-bottom:.75rem;display:none}
+    .stag{font-size:10px;padding:2px 7px;border-radius:10px;font-weight:500}
+    .slt{display:flex;gap:5px;overflow-x:auto;margin-bottom:.85rem}
+    .sl2{padding:4px 10px;border:.5px solid var(--bd);border-radius:20px;font-size:11px;white-space:nowrap;color:var(--tm);background:var(--s2)}
+    .sl2.act{background:var(--fa);color:#fff;border-color:var(--fa)}
+    .sl2.dn{background:var(--bgs);color:var(--tg);border-color:var(--bds)}
 
     /* RESULTS */
-    .result-hero { text-align: center; padding: 1.25rem 0 0.85rem; }
-    .result-pct { font-size: 44px; font-weight: 500; }
-    .result-sub { font-size: 13px; color: var(--text-muted); margin-top: 3px; }
-    .result-grade { font-size: 14px; font-weight: 500; margin-top: 6px; }
-    .rgrid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 7px; margin: 0.85rem 0; }
-    .rc2 { background: var(--surface-1); border-radius: var(--radius); padding: 0.6rem; text-align: center; }
-    .rc2-n { font-size: 17px; font-weight: 500; }
-    .rc2-l { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
-    .racts { display: flex; gap: 7px; margin: 0.75rem 0; }
-    .rev-item { background: var(--surface-2); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 0.65rem 0.85rem; margin-bottom: 6px; }
-    .rev-meta { font-size: 10px; color: var(--text-muted); margin-bottom: 3px; }
-    .rev-q { font-size: 12px; margin-bottom: 4px; line-height: 1.5; }
-    .rev-ans { display: flex; gap: 8px; font-size: 11px; }
-    .ok { color: var(--text-success); }
-    .nok { color: var(--text-danger); }
-    .rev-exp { font-size: 11px; color: var(--text-muted); margin-top: 3px; line-height: 1.5; }
-
-    /* BOOKMARKS */
-    .bm-empty { text-align: center; padding: 2.5rem; color: var(--text-muted); font-size: 13px; }
-    .bm-item { background: var(--surface-2); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 0.75rem; margin-bottom: 7px; }
-    .bm-meta { font-size: 10px; color: var(--text-muted); margin-bottom: 4px; }
-    .bm-q { font-size: 13px; margin-bottom: 5px; line-height: 1.5; }
-    .bm-ans { font-size: 12px; color: var(--text-success); margin-bottom: 4px; }
-    .bm-exp { font-size: 11px; color: var(--text-muted); line-height: 1.5; }
-    .bm-rm { padding: 4px 10px; border-radius: var(--radius); border: 0.5px solid var(--border); font-size: 11px; cursor: pointer; background: var(--surface-2); color: var(--text-secondary); margin-top: 6px; font-family: var(--font-sans); }
+    .rh{text-align:center;padding:1.25rem 0 .85rem}
+    .rpct{font-size:44px;font-weight:500}
+    .rsub{font-size:13px;color:var(--tm);margin-top:3px}
+    .rg{font-size:14px;font-weight:500;margin-top:6px}
+    .rc2{background:var(--s1);border-radius:var(--r);padding:.6rem;text-align:center}
+    .rc2n{font-size:17px;font-weight:500}.rc2l{font-size:10px;color:var(--tm);margin-top:2px}
+    .racts{display:flex;gap:7px;margin:.75rem 0}
+    .rev-it{background:var(--s2);border:.5px solid var(--bd);border-radius:var(--r);padding:.65rem .85rem;margin-bottom:6px}
+    .rev-m{font-size:10px;color:var(--tm);margin-bottom:3px}
+    .rev-q{font-size:12px;margin-bottom:4px;line-height:1.5}
+    .rev-a{display:flex;gap:8px;font-size:11px;flex-wrap:wrap}
+    .ok{color:var(--tg)}.nok{color:var(--td)}
+    .rev-e{font-size:11px;color:var(--tm);margin-top:3px;line-height:1.5}
 
     /* TOOLS */
-    .tool-tabs { display: flex; gap: 5px; margin-bottom: 1rem; flex-wrap: wrap; }
-    .tt { padding: 5px 10px; border: 0.5px solid var(--border); border-radius: 20px; font-size: 12px; cursor: pointer; color: var(--text-muted); background: var(--surface-2); font-family: var(--font-sans); }
-    .tt.on { background: var(--fill-accent); color: #fff; border-color: var(--fill-accent); }
+    .ttabs{display:flex;gap:5px;margin-bottom:1rem;flex-wrap:wrap}
+    .tt{padding:5px 10px;border:.5px solid var(--bd);border-radius:20px;font-size:12px;cursor:pointer;color:var(--tm);background:var(--s2);font-family:var(--font)}
+    .tt.on{background:var(--fa);color:#fff;border-color:var(--fa)}
+    .vcard{background:var(--s2);border:.5px solid var(--bd);border-radius:12px;padding:1.25rem;margin-bottom:.75rem;text-align:center}
+    .vw{font-size:22px;font-weight:500;margin-bottom:3px}
+    .vt{font-size:10px;color:var(--tm);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+    .vm{font-size:13px;color:var(--ts);line-height:1.6}
+    .vex{font-size:12px;color:var(--tm);margin-top:7px;font-style:italic}
+    .fi2{background:var(--s2);border:.5px solid var(--bd);border-radius:var(--r);padding:7px 10px;margin-bottom:5px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+    .fi2n{font-size:11px;color:var(--tm);min-width:150px}
+    .fi2e{font-size:12px;font-family:var(--mono)}
+    .fs-title{font-size:13px;font-weight:500;margin-bottom:7px;padding-bottom:5px;border-bottom:.5px solid var(--bd)}
+    .empty{text-align:center;padding:2.5rem;color:var(--tm);font-size:13px}
+    .mock-warn{background:var(--bgd);border:.5px solid var(--bdd);border-radius:var(--r);padding:8px 12px;font-size:12px;color:var(--td);margin-bottom:1rem}
+    .sec-lbl{font-size:12px;color:var(--tm);font-weight:500;margin-bottom:6px;margin-top:.5rem}
+    .streak-banner{background:var(--bgw);border:.5px solid var(--bdw);border-radius:12px;padding:.75rem 1rem;margin-bottom:1rem;text-align:center;display:none}
 
-    .vocab-card { background: var(--surface-2); border: 0.5px solid var(--border); border-radius: 12px; padding: 1.25rem; margin-bottom: 0.75rem; text-align: center; }
-    .vword { font-size: 22px; font-weight: 500; margin-bottom: 3px; }
-    .vtype { font-size: 10px; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
-    .vmean { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
-    .vex { font-size: 12px; color: var(--text-muted); margin-top: 7px; font-style: italic; }
-    .vsrc { font-size: 10px; margin-top: 8px; padding: 2px 8px; display: inline-block; border-radius: 8px; }
-
-    .formula-sec { margin-bottom: 1rem; }
-    .fs-title { font-size: 13px; font-weight: 500; margin-bottom: 7px; padding-bottom: 5px; border-bottom: 0.5px solid var(--border); }
-    .fi { background: var(--surface-2); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 7px 10px; margin-bottom: 5px; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-    .fi-name { font-size: 11px; color: var(--text-muted); min-width: 140px; }
-    .fi-eq { font-size: 12px; font-family: var(--font-mono); }
-    .fi-src { font-size: 9px; padding: 1px 5px; border-radius: 6px; flex-shrink: 0; }
-
-    /* MOCK */
-    .mock-hero { text-align: center; padding: 1.5rem 1rem; }
-    .mock-warn { background: var(--bg-danger); border: 0.5px solid var(--border-danger); border-radius: var(--radius); padding: 8px 12px; font-size: 12px; color: var(--text-danger); margin-bottom: 1rem; }
-    .sec-lock-tabs { display: flex; gap: 5px; overflow-x: auto; margin-bottom: 0.85rem; }
-    .slt { padding: 4px 10px; border: 0.5px solid var(--border); border-radius: 20px; font-size: 11px; white-space: nowrap; color: var(--text-muted); background: var(--surface-2); }
-    .slt.active-s { background: var(--fill-accent); color: #fff; border-color: var(--fill-accent); }
-    .slt.done-s { background: var(--bg-success); color: var(--text-success); border-color: var(--border-success); }
-
-    .ai-loading { text-align: center; padding: 2.5rem 0; }
-    .spin { display: inline-block; width: 26px; height: 26px; border: 2.5px solid var(--border); border-top-color: var(--fill-accent); border-radius: 50%; animation: spin 0.8s linear infinite; margin-bottom: 8px; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .load-txt { font-size: 12px; color: var(--text-muted); }
-
-    .section-lbl { font-size: 12px; color: var(--text-muted); font-weight: 500; margin-bottom: 6px; }
-
-    @media (max-width: 500px) {
-      .dash-stats { grid-template-columns: repeat(2, 1fr); }
-      .rgrid { grid-template-columns: repeat(2, 1fr); }
-      .nav-tabs { gap: 2px; }
-      .nav-tab { padding: 4px 7px; font-size: 11px; }
+    @media(max-width:500px){
+      .g4{grid-template-columns:repeat(2,1fr)}
+      .tabs{gap:1px}.tab{padding:4px 6px;font-size:11px}
+      .bars .nm{width:100px}
     }
   </style>
 </head>
 <body>
-<div class="container">
-<div class="app" id="app">
-
-<div class="nav">
-  <div class="nav-logo">SSC<span>CGL</span></div>
-  <div class="nav-tabs">
-    <button class="nav-tab active" onclick="goTab('dash')">Home</button>
-    <button class="nav-tab" onclick="goTab('practice')">Practice</button>
-    <button class="nav-tab" onclick="goTab('mock')">Mock</button>
-    <button class="nav-tab" onclick="goTab('saved')">Saved</button>
-    <button class="nav-tab" onclick="goTab('tools')">Tools</button>
-  </div>
-  <div class="xp-badge"><i class="ti ti-flame"></i> <span id="xp-val">0</span> XP</div>
-</div>
+<div class="wrap">
 
 <!-- DASHBOARD -->
-<div class="screen active" id="dash-screen">
-  <div id="streak-banner" style="display:none;background:var(--bg-warning);border:0.5px solid var(--border-warning);border-radius:12px;padding:0.75rem 1rem;margin-bottom:1rem;text-align:center">
-    <div id="streak-txt" style="font-size:13px;font-weight:500;color:var(--text-warning)"></div>
-  </div>
-  <div class="dash-stats">
-    <div class="sc"><div class="sc-n b" id="d-total">0</div><div class="sc-l">Questions</div></div>
-    <div class="sc"><div class="sc-n g" id="d-acc">—</div><div class="sc-l">Accuracy</div></div>
-    <div class="sc"><div class="sc-n a" id="d-streak">0</div><div class="sc-l">Day streak</div></div>
-    <div class="sc"><div class="sc-n" id="d-xp">0</div><div class="sc-l">Total XP</div></div>
-  </div>
-  <div class="xp-label">
-    <span id="xp-level-lbl">Level 1 — Beginner</span>
-    <span id="xp-next-lbl">0 / 100 XP</span>
-  </div>
-  <div class="xp-bar-wrap"><div class="xp-bar-fill" id="xp-bar" style="width:0%"></div></div>
-
-  <div class="sec-bars">
-    <div class="sec-bars-title">Section accuracy</div>
-    <div class="sb-row"><div class="sb-name">Quant (R.S. Aggarwal)</div><div class="sb-bg"><div class="sb-fill" id="bar-qa" style="width:0%;background:var(--fill-accent)"></div></div><div class="sb-pct" id="pct-qa">—</div></div>
-    <div class="sb-row"><div class="sb-name">Reasoning (M.K. Pandey)</div><div class="sb-bg"><div class="sb-fill" id="bar-ri" style="width:0%;background:var(--fill-pro)"></div></div><div class="sb-pct" id="pct-ri">—</div></div>
-    <div class="sb-row"><div class="sb-name">English (SP Bakshi)</div><div class="sb-bg"><div class="sb-fill" id="bar-en" style="width:0%;background:var(--fill-success)"></div></div><div class="sb-pct" id="pct-en">—</div></div>
-    <div class="sb-row"><div class="sb-name">GK (Lucent's)</div><div class="sb-bg"><div class="sb-fill" id="bar-ga" style="width:0%;background:var(--fill-warning)"></div></div><div class="sb-pct" id="pct-ga">—</div></div>
+<div class="screen active" id="s-dash">
+  <div class="nav">
+    <div class="logo">SSC<span>CGL</span></div>
+    <div class="tabs">
+      <button class="tab on"  onclick="go('dash')">Home</button>
+      <button class="tab"     onclick="go('practice')">Practice</button>
+      <button class="tab"     onclick="go('mock')">Mock</button>
+      <button class="tab"     onclick="go('saved')">Saved</button>
+      <button class="tab"     onclick="go('tools')">Tools</button>
+    </div>
+    <div class="xpb"><i class="ti ti-flame"></i><span id="xpv">0</span> XP</div>
   </div>
 
-  <div class="trend-wrap">
-    <div class="trend-title">Score trend</div>
-    <div class="chart-bars" id="chart-bars"><div style="font-size:11px;color:var(--text-muted);padding:1rem 0">Complete sessions to see your trend</div></div>
-    <div class="chart-lbls" id="chart-lbls"></div>
+  <div class="streak-banner" id="strbanner">
+    <div id="strtxt" style="font-size:13px;font-weight:500;color:var(--tw)"></div>
   </div>
 
-  <div class="plan-box">
-    <div class="plan-title">Today's study plan</div>
-    <div id="plan-list"></div>
+  <div class="g4">
+    <div class="sc"><div class="sn b" id="d-tot">0</div><div class="sl">Questions</div></div>
+    <div class="sc"><div class="sn g" id="d-acc">—</div><div class="sl">Accuracy</div></div>
+    <div class="sc"><div class="sn a" id="d-str">0</div><div class="sl">Day streak</div></div>
+    <div class="sc"><div class="sn"   id="d-xp">0</div><div class="sl">Total XP</div></div>
   </div>
 
-  <div class="quick-grid">
+  <div class="xplbl"><span id="xp-lv">Level — Beginner</span><span id="xp-nx">0 / 100 XP</span></div>
+  <div class="xpbar"><div class="xpfill" id="xpfill" style="width:0%"></div></div>
+
+  <div class="card">
+    <div class="card-title">Section accuracy</div>
+    <div class="bars">
+      <div class="row"><div class="nm">Quant (R.S. Aggarwal)</div><div class="bg"><div class="fi" id="b-qa" style="width:0%;background:var(--fa)"></div></div><div class="pt" id="p-qa">—</div></div>
+      <div class="row"><div class="nm">Reasoning (M.K. Pandey)</div><div class="bg"><div class="fi" id="b-ri" style="width:0%;background:var(--fpr)"></div></div><div class="pt" id="p-ri">—</div></div>
+      <div class="row"><div class="nm">English (SP Bakshi)</div><div class="bg"><div class="fi" id="b-en" style="width:0%;background:var(--fg)"></div></div><div class="pt" id="p-en">—</div></div>
+      <div class="row"><div class="nm">GK (Lucent's)</div><div class="bg"><div class="fi" id="b-ga" style="width:0%;background:var(--fw)"></div></div><div class="pt" id="p-ga">—</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Score trend — last 8 sessions</div>
+    <div class="chart" id="trend"><div style="font-size:11px;color:var(--tm);padding:.5rem 0">Complete sessions to see your trend</div></div>
+    <div style="display:flex;gap:3px" id="trendl"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Today's study plan</div>
+    <div id="plan"></div>
+  </div>
+
+  <div class="g2">
     <div class="qc" onclick="launchWeak()">
-      <div class="qc-title"><i class="ti ti-target" style="font-size:14px;vertical-align:-2px;margin-right:4px"></i> Attack weak spots</div>
-      <div class="qc-sub" id="weak-hint">Detect after 5+ Qs per section</div>
+      <div class="qct"><i class="ti ti-target" style="font-size:14px;vertical-align:-2px;margin-right:4px"></i>Attack weak spots</div>
+      <div class="qcs" id="weak-h">Complete 5+ Qs per section</div>
     </div>
-    <div class="qc" onclick="goTab('mock')">
-      <div class="qc-title"><i class="ti ti-clock" style="font-size:14px;vertical-align:-2px;margin-right:4px"></i> Full Tier 1 mock</div>
-      <div class="qc-sub">100 Qs · 60 min · −0.5 marking</div>
+    <div class="qc" onclick="go('mock')">
+      <div class="qct"><i class="ti ti-clock" style="font-size:14px;vertical-align:-2px;margin-right:4px"></i>Full Tier 1 mock</div>
+      <div class="qcs">100 Qs · 60 min · −0.5 marking</div>
     </div>
   </div>
 
-  <div class="source-legend">
-    <span class="src-pill src-rsa">R.S. Aggarwal</span>
-    <span class="src-pill src-ry">Rakesh Yadav</span>
-    <span class="src-pill src-mkp">M.K. Pandey</span>
-    <span class="src-pill src-spb">SP Bakshi</span>
-    <span class="src-pill src-luc">Lucent GK</span>
-    <span class="src-pill src-tb">Testbook / Adda247</span>
-    <span class="src-pill src-pyq">PYQ</span>
+  <div class="legend">
+    <span class="src rsa">R.S. Aggarwal</span>
+    <span class="src ry">Rakesh Yadav</span>
+    <span class="src mkp">M.K. Pandey</span>
+    <span class="src spb">SP Bakshi</span>
+    <span class="src luc">Lucent GK</span>
+    <span class="src tb">Testbook / Adda247</span>
+    <span class="src pyq">PYQ</span>
+  </div>
+  <div style="font-size:11px;color:var(--tm);text-align:center;padding:.5rem 0">
+    <span id="qbank-count">—</span> questions in bank · Add more in questions.js · No API key needed
   </div>
 </div>
 
 <!-- PRACTICE -->
-<div class="screen" id="practice-screen">
+<div class="screen" id="s-practice">
+  <div class="nav">
+    <div class="logo">SSC<span>CGL</span></div>
+    <div class="tabs">
+      <button class="tab"    onclick="go('dash')">Home</button>
+      <button class="tab on">Practice</button>
+      <button class="tab"    onclick="go('mock')">Mock</button>
+      <button class="tab"    onclick="go('saved')">Saved</button>
+      <button class="tab"    onclick="go('tools')">Tools</button>
+    </div>
+    <div class="xpb"><i class="ti ti-flame"></i><span id="xpv2">0</span> XP</div>
+  </div>
   <div id="prac-home">
-    <div class="section-lbl">Mode</div>
-    <div class="mode-row">
-      <div class="mc sel" id="m-study" onclick="selMode('study')">
-        <div class="mc-icon">📖</div>
-        <div class="mc-name">Study</div>
-        <div class="mc-desc">Solutions + tricks after each answer</div>
-      </div>
-      <div class="mc" id="m-exam" onclick="selMode('exam')">
-        <div class="mc-icon">⏱️</div>
-        <div class="mc-name">Exam mode</div>
-        <div class="mc-desc">Timed · −0.5 negative marking</div>
-      </div>
+    <div class="sec-lbl">Mode</div>
+    <div class="g2">
+      <div class="mc sel" id="m-study" onclick="setMode('study')"><div class="mci">📖</div><div class="mcn">Study</div><div class="mcd">Solutions + tricks after each answer</div></div>
+      <div class="mc"     id="m-exam"  onclick="setMode('exam')"><div class="mci">⏱️</div><div class="mcn">Exam mode</div><div class="mcd">Timed · −0.5 negative marking</div></div>
     </div>
-    <div class="section-lbl">Section</div>
-    <div class="pill-row">
-      <div class="pill on" id="sp-qa" onclick="togSec('qa')">Quant</div>
-      <div class="pill" id="sp-ri" onclick="togSec('ri')">Reasoning</div>
-      <div class="pill" id="sp-en" onclick="togSec('en')">English</div>
-      <div class="pill" id="sp-ga" onclick="togSec('ga')">GK</div>
+    <div class="sec-lbl">Section</div>
+    <div class="pills">
+      <div class="pill on" id="sp-qa" onclick="togS('qa')">Quant</div>
+      <div class="pill"    id="sp-ri" onclick="togS('ri')">Reasoning</div>
+      <div class="pill"    id="sp-en" onclick="togS('en')">English</div>
+      <div class="pill"    id="sp-ga" onclick="togS('ga')">GK</div>
     </div>
-    <div class="filter-row">
+    <div class="frow">
       <span class="fl">Questions:</span>
-      <select id="qc-sel">
-        <option value="10">10</option>
-        <option value="20" selected>20</option>
-        <option value="25">25 (full set)</option>
-        <option value="50">50</option>
-      </select>
-      <span class="fl">Year:</span>
-      <select id="yr-sel">
-        <option value="all">All years</option>
-        <option value="2024">2024</option>
-        <option value="2023">2023</option>
-        <option value="2022">2022</option>
-        <option value="2021">2021</option>
-      </select>
+      <select id="qn"><option value="10">10</option><option value="20" selected>20</option><option value="25">25</option><option value="50">50</option><option value="0">All</option></select>
       <span class="fl">Difficulty:</span>
-      <select id="df-sel">
-        <option value="all">Mixed</option>
-        <option value="easy">Easy</option>
-        <option value="medium">Medium</option>
-        <option value="hard">Hard</option>
-      </select>
+      <select id="df"><option value="all">Mixed</option><option value="easy">Easy</option><option value="medium">Medium</option><option value="hard">Hard</option></select>
+      <span class="fl">Topic:</span>
+      <select id="tp"><option value="all">All topics</option></select>
     </div>
-    <button class="start-btn" onclick="startPractice()">Start session →</button>
+    <button class="btn-start" onclick="startPrac()">Start session →</button>
   </div>
   <div id="prac-quiz"></div>
 </div>
 
-<!-- FULL MOCK -->
-<div class="screen" id="mock-screen">
+<!-- MOCK -->
+<div class="screen" id="s-mock">
+  <div class="nav">
+    <div class="logo">SSC<span>CGL</span></div>
+    <div class="tabs">
+      <button class="tab"    onclick="go('dash')">Home</button>
+      <button class="tab"    onclick="go('practice')">Practice</button>
+      <button class="tab on">Mock</button>
+      <button class="tab"    onclick="go('saved')">Saved</button>
+      <button class="tab"    onclick="go('tools')">Tools</button>
+    </div>
+    <div class="xpb"><i class="ti ti-flame"></i><span id="xpv3">0</span> XP</div>
+  </div>
   <div id="mock-home">
-    <div class="mock-hero">
+    <div class="card" style="text-align:center;padding:1.5rem 1rem">
       <div style="font-size:18px;font-weight:500;margin-bottom:6px">Full Tier 1 simulation</div>
-      <div style="font-size:13px;color:var(--text-muted);line-height:1.6;margin-bottom:1rem">
-        100 questions · 60 minutes · 4 sections<br>
-        Sectional time locks · −0.5 negative marking<br>
-        Sources: Testbook, Adda247, Career Power PYQ
+      <div style="font-size:13px;color:var(--tm);line-height:1.6;margin-bottom:1rem">
+        All 4 sections · Sectional time locks · −0.5 negative marking<br>
+        Sourced from Testbook, Adda247, Career Power PYQ series
       </div>
       <div class="mock-warn">
-        <i class="ti ti-alert-triangle" style="font-size:13px;vertical-align:-2px;margin-right:4px"></i>
-        Once a section timer runs out, you cannot go back to it
+        <i class="ti ti-alert-triangle" style="font-size:12px;vertical-align:-1px;margin-right:4px"></i>
+        Section timer locks once started — you cannot go back
       </div>
-      <div class="dash-stats" style="margin-bottom:1rem">
-        <div class="sc"><div class="sc-n">25</div><div class="sc-l">Qs / section</div></div>
-        <div class="sc"><div class="sc-n">15 min</div><div class="sc-l">Per section</div></div>
-        <div class="sc"><div class="sc-n r">−0.5</div><div class="sc-l">Wrong answer</div></div>
-        <div class="sc"><div class="sc-n">200</div><div class="sc-l">Max marks</div></div>
+      <div class="g4" style="margin-bottom:1rem">
+        <div class="sc"><div class="sn">25</div><div class="sl">Qs / section</div></div>
+        <div class="sc"><div class="sn">15 min</div><div class="sl">Per section</div></div>
+        <div class="sc"><div class="sn r">−0.5</div><div class="sl">Wrong answer</div></div>
+        <div class="sc"><div class="sn">200</div><div class="sl">Max marks</div></div>
       </div>
-      <button class="start-btn" onclick="startFullMock()">Start full mock →</button>
+      <button class="btn-start" onclick="startMock()">Start full mock →</button>
     </div>
   </div>
   <div id="mock-quiz" style="display:none"></div>
 </div>
 
-<!-- SAVED / BOOKMARKS -->
-<div class="screen" id="saved-screen">
-  <div style="font-size:13px;font-weight:500;margin-bottom:0.75rem">Bookmarked questions</div>
+<!-- SAVED -->
+<div class="screen" id="s-saved">
+  <div class="nav">
+    <div class="logo">SSC<span>CGL</span></div>
+    <div class="tabs">
+      <button class="tab"    onclick="go('dash')">Home</button>
+      <button class="tab"    onclick="go('practice')">Practice</button>
+      <button class="tab"    onclick="go('mock')">Mock</button>
+      <button class="tab on">Saved</button>
+      <button class="tab"    onclick="go('tools')">Tools</button>
+    </div>
+    <div class="xpb"><i class="ti ti-flame"></i><span id="xpv4">0</span> XP</div>
+  </div>
+  <div style="font-size:13px;font-weight:500;margin-bottom:.75rem">Bookmarked questions</div>
   <div id="saved-list"></div>
 </div>
 
 <!-- TOOLS -->
-<div class="screen" id="tools-screen">
-  <div class="tool-tabs">
-    <button class="tt on" id="tt-vocab"   onclick="selTool('vocab')">Vocab (SP Bakshi)</button>
-    <button class="tt"    id="tt-formula" onclick="selTool('formula')">Formulas (R.S.A)</button>
-    <button class="tt"    id="tt-tricks"  onclick="selTool('tricks')">Speed tricks (R.Y.)</button>
-    <button class="tt"    id="tt-ca"      onclick="selTool('ca')">Current affairs</button>
+<div class="screen" id="s-tools">
+  <div class="nav">
+    <div class="logo">SSC<span>CGL</span></div>
+    <div class="tabs">
+      <button class="tab"    onclick="go('dash')">Home</button>
+      <button class="tab"    onclick="go('practice')">Practice</button>
+      <button class="tab"    onclick="go('mock')">Mock</button>
+      <button class="tab"    onclick="go('saved')">Saved</button>
+      <button class="tab on">Tools</button>
+    </div>
+    <div class="xpb"><i class="ti ti-flame"></i><span id="xpv5">0</span> XP</div>
+  </div>
+  <div class="ttabs">
+    <button class="tt on" id="tt-v"  onclick="setTool('vocab')">Vocab (SP Bakshi)</button>
+    <button class="tt"    id="tt-f"  onclick="setTool('formula')">Formulas (R.S.A)</button>
+    <button class="tt"    id="tt-tr" onclick="setTool('tricks')">Speed tricks</button>
+    <button class="tt"    id="tt-ca" onclick="setTool('ca')">Current affairs</button>
   </div>
   <div id="tool-body"></div>
 </div>
 
-<!-- QUIZ & RESULT (shared overlay screens) -->
-<div class="screen" id="quiz-screen"><div id="quiz-inner"></div></div>
-<div class="screen" id="result-screen"><div id="result-inner"></div></div>
+<!-- QUIZ -->
+<div class="screen" id="s-quiz">
+  <div class="nav">
+    <div class="logo">SSC<span>CGL</span></div>
+    <div class="tabs"><button class="tab" onclick="go('practice')">← Back</button></div>
+    <div class="xpb"><i class="ti ti-flame"></i><span id="xpv6">0</span> XP</div>
+  </div>
+  <div id="quiz-inner"></div>
+</div>
 
-</div><!-- /.app -->
-</div><!-- /.container -->
+<!-- RESULT -->
+<div class="screen" id="s-result">
+  <div class="nav">
+    <div class="logo">SSC<span>CGL</span></div>
+    <div class="tabs"><button class="tab" onclick="go('dash')">Home</button></div>
+    <div class="xpb"><i class="ti ti-flame"></i><span id="xpv7">0</span> XP</div>
+  </div>
+  <div id="result-inner"></div>
+</div>
 
+</div><!-- /wrap -->
 <script>
-/* =====================================================================
-   STATE
-   ===================================================================== */
-const G = {
-  mode: 'study', secs: ['qa'], qc: 20, yr: 'all', df: 'all',
-  questions: [], cur: 0, answers: [], bookmarks: [],
-  xp: 0, streak: 0, lastDate: '', totalSessions: 0,
-  totalAttempted: 0, totalCorrect: 0,
-  bySection: { qa:{a:0,t:0}, ri:{a:0,t:0}, en:{a:0,t:0}, ga:{a:0,t:0} },
-  history: [],
-  timer: null, secsLeft: 0, totalSecs: 0,
-  isMock: false, mockSecIdx: 0, mockSecTimer: null, mockSecLeft: 900,
-  mockScore: 0, activeTool: 'vocab',
-  plan: [
-    { t: '20 Quant Qs — Percentage & Ratio (R.S. Aggarwal Ch.10)', src: 'rsa', done: false },
-    { t: '20 Reasoning Qs — Coding-Decoding (M.K. Pandey Ch.4)',   src: 'mkp', done: false },
-    { t: '10 Vocab words (SP Bakshi Synonyms list)',                src: 'spb', done: false },
-    { t: '20 GK Qs — History & Polity (Lucent GK)',                src: 'luc', done: false },
-    { t: '1 timed mock section — English (Adda247 series)',         src: 'tb',  done: false }
+/* ─────────────────── STATE ─────────────────── */
+const G={
+  mode:'study',secs:['qa'],qn:20,df:'all',tp:'all',
+  questions:[],cur:0,answers:[],bookmarks:[],
+  xp:0,streak:0,lastDate:'',sessions:0,
+  totAtt:0,totCor:0,
+  byS:{qa:{a:0,t:0},ri:{a:0,t:0},en:{a:0,t:0},ga:{a:0,t:0}},
+  hist:[],timer:null,secLeft:0,totSec:0,
+  isMock:false,mIdx:0,mTimer:null,mSecLeft:900,mScore:0,
+  activeTool:'vocab',
+  plan:[
+    {t:'20 Quant Qs — Percentage & Ratio (R.S. Aggarwal Ch.10)',src:'rsa',done:false},
+    {t:'20 Reasoning Qs — Coding-Decoding (M.K. Pandey Ch.4)',src:'mkp',done:false},
+    {t:'10 Vocab words (SP Bakshi Synonyms)',src:'spb',done:false},
+    {t:'20 GK Qs — History & Polity (Lucent GK)',src:'luc',done:false},
+    {t:'1 timed mock section — English (Adda247)',src:'tb',done:false}
   ]
 };
 
-const SM = {
-  qa: { n: 'Quant',     f: 'R.S. Aggarwal / Rakesh Yadav', sc: 'src-rsa' },
-  ri: { n: 'Reasoning', f: 'M.K. Pandey',                   sc: 'src-mkp' },
-  en: { n: 'English',   f: 'SP Bakshi / PYQ',               sc: 'src-spb' },
-  ga: { n: 'GK',        f: "Lucent's GK",                   sc: 'src-luc' }
-};
+const SM={qa:{n:'Quant',sc:'rsa'},ri:{n:'Reasoning',sc:'mkp'},en:{n:'English',sc:'spb'},ga:{n:'GK',sc:'luc'}};
+const LEVELS=[{n:'Beginner',x:0},{n:'Learner',x:100},{n:'Practitioner',x:300},{n:'Solver',x:600},{n:'Expert',x:1000},{n:'Master',x:1500}];
+const SRC_MAP={'R.S. Aggarwal':'rsa','Rakesh Yadav':'ry','M.K. Pandey':'mkp','SP Bakshi':'spb','Lucent':'luc','Testbook':'tb','Adda247':'tb','Career Power':'tb','PYQ SSC':'pyq','PYQ':'pyq'};
 
-const LEVELS = [
-  { n: 'Beginner',     xp: 0    },
-  { n: 'Learner',      xp: 100  },
-  { n: 'Practitioner', xp: 300  },
-  { n: 'Solver',       xp: 600  },
-  { n: 'Expert',       xp: 1000 },
-  { n: 'Master',       xp: 1500 }
-];
+function getSC(src){
+  if(!src)return'pyq';
+  for(const[k,v]of Object.entries(SRC_MAP))if(src.includes(k))return v;
+  return'pyq';
+}
+function getLv(){let l=LEVELS[0];for(const lv of LEVELS)if(G.xp>=lv.x)l=lv;return l;}
+function getNX(){for(const lv of LEVELS)if(lv.x>G.xp)return lv.x;return G.xp;}
 
-/* =====================================================================
-   ANTHROPIC API KEY
-   Set your key here OR use an environment variable / backend proxy.
-   ===================================================================== */
-const ANTHROPIC_API_KEY = 'YOUR_ANTHROPIC_API_KEY_HERE';
-
-/* =====================================================================
-   NAVIGATION
-   ===================================================================== */
-function goTab(t) {
-  document.querySelectorAll('.nav-tab').forEach((el, i) => {
-    el.classList.toggle('active', ['dash','practice','mock','saved','tools'][i] === t);
-  });
-  ['dash','practice','mock','saved','quiz','result','tools'].forEach(id => {
-    const el = document.getElementById(id + '-screen');
-    if (el) el.classList.remove('active');
-  });
-  const map = { dash:'dash-screen', practice:'practice-screen', mock:'mock-screen', saved:'saved-screen', tools:'tools-screen' };
-  if (map[t]) {
-    document.getElementById(map[t]).classList.add('active');
-    if (t === 'dash')   renderDash();
-    if (t === 'saved')  renderSaved();
-    if (t === 'tools')  renderTool();
+/* ─────────────────── NAV ─────────────────── */
+function go(t){
+  ['dash','practice','mock','saved','tools','quiz','result'].forEach(s=>document.getElementById('s-'+s).classList.remove('active'));
+  document.getElementById('s-'+t).classList.add('active');
+  syncXP();
+  if(t==='dash'){renderDash();refreshTopicFilter();}
+  if(t==='saved')renderSaved();
+  if(t==='tools')renderTool();
+  if(t==='practice'){
+    document.getElementById('prac-home').style.display='block';
+    document.getElementById('prac-quiz').innerHTML='';
   }
 }
-
-function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-}
-
-/* =====================================================================
-   DASHBOARD
-   ===================================================================== */
-function getLevel() { let l = LEVELS[0]; for (const lv of LEVELS) if (G.xp >= lv.xp) l = lv; return l; }
-function getNextXP() { for (const lv of LEVELS) if (lv.xp > G.xp) return lv.xp; return G.xp; }
-
-function renderDash() {
-  document.getElementById('d-total').textContent   = G.totalAttempted;
-  document.getElementById('d-acc').textContent     = G.totalAttempted > 0 ? Math.round(G.totalCorrect / G.totalAttempted * 100) + '%' : '—';
-  document.getElementById('d-streak').textContent  = G.streak;
-  document.getElementById('d-xp').textContent      = G.xp;
-  document.getElementById('xp-val').textContent    = G.xp;
-
-  const lv = getLevel(), nxp = getNextXP();
-  const lvPct = nxp > lv.xp ? Math.min(100, Math.round((G.xp - lv.xp) / (nxp - lv.xp) * 100)) : 100;
-  document.getElementById('xp-level-lbl').textContent = 'Level — ' + lv.n;
-  document.getElementById('xp-next-lbl').textContent  = G.xp + ' / ' + nxp + ' XP';
-  document.getElementById('xp-bar').style.width = lvPct + '%';
-
-  ['qa','ri','en','ga'].forEach(s => {
-    const d = G.bySection[s], p = d.t > 0 ? Math.round(d.a / d.t * 100) : 0;
-    document.getElementById('bar-' + s).style.width = p + '%';
-    document.getElementById('pct-' + s).textContent = d.t > 0 ? p + '%' : '—';
+function syncXP(){
+  ['xpv','xpv2','xpv3','xpv4','xpv5','xpv6','xpv7'].forEach(id=>{
+    const e=document.getElementById(id);if(e)e.textContent=G.xp;
   });
-
-  if (G.streak > 0) {
-    document.getElementById('streak-banner').style.display = 'block';
-    document.getElementById('streak-txt').textContent = '🔥 ' + G.streak + ' day streak! Keep it going!';
-  }
-
-  const hist = G.history.slice(-8);
-  const bars = document.getElementById('chart-bars');
-  const lbls = document.getElementById('chart-lbls');
-  if (hist.length > 0) {
-    const mx = Math.max(...hist.map(h => h.pct), 1);
-    bars.innerHTML = hist.map(h =>
-      `<div class="cb" style="height:${Math.max(6, Math.round(h.pct/mx*70))}px;background:${h.pct>=70?'var(--fill-success)':h.pct>=50?'var(--fill-accent)':'var(--fill-danger)'}" title="${h.pct}%"></div>`
-    ).join('');
-    lbls.innerHTML = hist.map(h => `<div class="cl">${h.pct}%</div>`).join('');
-  }
-
-  const srcClass = { rsa:'src-rsa', mkp:'src-mkp', spb:'src-spb', luc:'src-luc', tb:'src-tb' };
-  const srcName  = { rsa:'R.S.A',   mkp:'M.K.P',   spb:'SP Bakshi', luc:'Lucent', tb:'Testbook' };
-  document.getElementById('plan-list').innerHTML = G.plan.map((p, i) =>
-    `<div class="plan-row">
-       <div class="plan-cb ${p.done?'done':''}" onclick="togglePlan(${i})">${p.done?'✓':''}</div>
-       <div class="plan-txt ${p.done?'done':''}">${p.t}</div>
-       <span class="src-pill ${srcClass[p.src]}">${srcName[p.src]}</span>
-     </div>`
-  ).join('');
-
-  let weakSec = null, weakPct = 101;
-  ['qa','ri','en','ga'].forEach(s => { const d = G.bySection[s]; if (d.t >= 5) { const p = Math.round(d.a/d.t*100); if (p < weakPct) { weakPct = p; weakSec = s; } } });
-  document.getElementById('weak-hint').textContent = weakSec
-    ? `${SM[weakSec].n}: ${weakPct}% — focus here!`
-    : 'Complete 5+ Qs per section to detect weaknesses';
 }
 
-function togglePlan(i) { G.plan[i].done = !G.plan[i].done; renderDash(); }
+/* ─────────────────── DASHBOARD ─────────────────── */
+function renderDash(){
+  document.getElementById('d-tot').textContent=G.totAtt;
+  document.getElementById('d-acc').textContent=G.totAtt>0?Math.round(G.totCor/G.totAtt*100)+'%':'—';
+  document.getElementById('d-str').textContent=G.streak;
+  document.getElementById('d-xp').textContent=G.xp;
+  const lv=getLv(),nx=getNX();
+  const pct=nx>lv.x?Math.min(100,Math.round((G.xp-lv.x)/(nx-lv.x)*100)):100;
+  document.getElementById('xp-lv').textContent='Level — '+lv.n;
+  document.getElementById('xp-nx').textContent=G.xp+' / '+nx+' XP';
+  document.getElementById('xpfill').style.width=pct+'%';
+  if(G.streak>0){
+    document.getElementById('strbanner').style.display='block';
+    document.getElementById('strtxt').textContent='🔥 '+G.streak+' day streak! Keep going!';
+  }
+  ['qa','ri','en','ga'].forEach(s=>{
+    const d=G.byS[s],p=d.t>0?Math.round(d.a/d.t*100):0;
+    document.getElementById('b-'+s).style.width=p+'%';
+    document.getElementById('p-'+s).textContent=d.t>0?p+'%':'—';
+  });
+  const hist=G.hist.slice(-8);
+  const tr=document.getElementById('trend'),tl=document.getElementById('trendl');
+  if(hist.length>0){
+    const mx=Math.max(...hist.map(h=>h.p),1);
+    tr.innerHTML=hist.map(h=>`<div class="cb" style="height:${Math.max(6,Math.round(h.p/mx*70))}px;background:${h.p>=70?'var(--fg)':h.p>=50?'var(--fa)':'var(--fd)'}" title="${h.p}%"></div>`).join('');
+    tl.innerHTML=hist.map(h=>`<div class="cl">${h.p}%</div>`).join('');
+  }
+  const srcs={rsa:'R.S.A',mkp:'M.K.P',spb:'SP Bakshi',luc:'Lucent',tb:'Testbook'};
+  document.getElementById('plan').innerHTML=G.plan.map((p,i)=>`
+    <div class="plan-row">
+      <div class="pcb ${p.done?'done':''}" onclick="togPlan(${i})">${p.done?'✓':''}</div>
+      <div class="pt2 ${p.done?'done':''}">${p.t}</div>
+      <span class="src ${p.src}">${srcs[p.src]}</span>
+    </div>`).join('');
+  let ws=null,wp=101;
+  ['qa','ri','en','ga'].forEach(s=>{const d=G.byS[s];if(d.t>=5){const p=Math.round(d.a/d.t*100);if(p<wp){wp=p;ws=s;}}});
+  document.getElementById('weak-h').textContent=ws?`${SM[ws].n}: ${wp}% accuracy — focus here!`:'Complete 5+ Qs per section to detect weaknesses';
+  const total=Object.values(QUESTION_BANK).reduce((s,a)=>s+a.length,0);
+  document.getElementById('qbank-count').textContent=total;
+}
+function togPlan(i){G.plan[i].done=!G.plan[i].done;renderDash();}
 
-/* =====================================================================
-   PRACTICE CONTROLS
-   ===================================================================== */
-function selMode(m) {
-  G.mode = m;
-  document.getElementById('m-study').classList.toggle('sel', m === 'study');
-  document.getElementById('m-exam').classList.toggle('sel', m === 'exam');
+/* ─────────────────── TOPIC FILTER ─────────────────── */
+function refreshTopicFilter(){
+  const sel=document.getElementById('tp');if(!sel)return;
+  const topics=new Set();
+  G.secs.forEach(s=>(QUESTION_BANK[s]||[]).forEach(q=>{if(q.topic)topics.add(q.topic);}));
+  sel.innerHTML='<option value="all">All topics</option>'+[...topics].sort().map(t=>`<option value="${t}">${t}</option>`).join('');
 }
 
-function togSec(s) {
-  const i = G.secs.indexOf(s);
-  if (i > -1) { if (G.secs.length === 1) return; G.secs.splice(i, 1); }
+/* ─────────────────── PRACTICE CONTROLS ─────────────────── */
+function setMode(m){
+  G.mode=m;
+  document.getElementById('m-study').classList.toggle('sel',m==='study');
+  document.getElementById('m-exam').classList.toggle('sel',m==='exam');
+}
+function togS(s){
+  const i=G.secs.indexOf(s);
+  if(i>-1){if(G.secs.length===1)return;G.secs.splice(i,1);}
   else G.secs.push(s);
-  ['qa','ri','en','ga'].forEach(k => document.getElementById('sp-'+k).classList.toggle('on', G.secs.includes(k)));
+  ['qa','ri','en','ga'].forEach(k=>document.getElementById('sp-'+k).classList.toggle('on',G.secs.includes(k)));
+  refreshTopicFilter();
+}
+function launchWeak(){
+  let ws=null,wp=101;
+  ['qa','ri','en','ga'].forEach(s=>{const d=G.byS[s];if(d.t>=3){const p=d.a/d.t*100;if(p<wp){wp=p;ws=s;}}});
+  if(ws){G.secs=[ws];['qa','ri','en','ga'].forEach(k=>document.getElementById('sp-'+k).classList.toggle('on',k===ws));}
+  go('practice');
 }
 
-function launchWeak() {
-  let ws = null, wp = 101;
-  ['qa','ri','en','ga'].forEach(s => { const d = G.bySection[s]; if (d.t >= 3) { const p = d.a/d.t*100; if (p < wp) { wp = p; ws = s; } } });
-  if (ws) { G.secs = [ws]; ['qa','ri','en','ga'].forEach(k => document.getElementById('sp-'+k).classList.toggle('on', k === ws)); }
-  goTab('practice');
+/* ─────────────────── GET QUESTIONS (from static bank) ─────────────────── */
+function getQs(secs,count,diff,topic){
+  let pool=[];
+  secs.forEach(s=>{
+    let qs=(QUESTION_BANK[s]||[]).map(q=>({...q,section:s}));
+    if(diff!=='all')qs=qs.filter(q=>q.difficulty===diff);
+    if(topic&&topic!=='all')qs=qs.filter(q=>q.topic===topic);
+    pool=pool.concat(qs);
+  });
+  pool=pool.sort(()=>Math.random()-.5);
+  return count===0?pool:pool.slice(0,count);
 }
 
-function startPractice() {
-  G.qc = parseInt(document.getElementById('qc-sel').value);
-  G.yr = document.getElementById('yr-sel').value;
-  G.df = document.getElementById('df-sel').value;
-  showScreen('quiz-screen');
-  loadQuestions(false);
-}
-
-/* =====================================================================
-   AI QUESTION LOADER
-   ===================================================================== */
-async function loadQuestions(isMock) {
-  G.isMock = isMock; G.cur = 0;
-  const container = document.getElementById(isMock ? 'mock-quiz' : 'quiz-inner');
-  if (container) container.innerHTML = '<div class="ai-loading"><div class="spin"></div><div class="load-txt">Fetching questions from source books...</div></div>';
-  if (isMock) { document.getElementById('mock-quiz').style.display = 'block'; document.getElementById('mock-home').style.display = 'none'; }
-
-  const secNames = isMock
-    ? 'Quantitative Aptitude, Reasoning and General Intelligence, English Language and Comprehension, General Awareness'
-    : G.secs.map(s => SM[s].n).join(', ');
-  const qn     = isMock ? 100 : G.qc;
-  const yrHint = G.yr === 'all' ? 'mixed years 2019–2024' : `specifically ${G.yr}`;
-  const dfHint = G.df === 'all' ? 'mixed difficulty levels' : G.df + ' difficulty';
-
-  const prompt = `You are an expert SSC CGL question bank creator. Generate exactly ${qn} high-quality MCQ questions for SSC CGL covering: ${secNames}.
-
-MANDATORY SOURCE MAPPING (strictly follow this):
-- Quantitative Aptitude: Use R.S. Aggarwal "Quantitative Aptitude" (Percentage Ch.10, SI/CI Ch.21, Ratio Ch.9, Time-Work Ch.15, TSD Ch.17, Profit-Loss Ch.11, Number System Ch.1, Geometry Ch.25) AND Rakesh Yadav's "7300+ Maths" with his shortcut tricks
-- Reasoning: Use M.K. Pandey "Analytical Reasoning" (Coding-Decoding Ch.4, Blood Relations Ch.6, Direction Sense Ch.8, Syllogism Ch.14, Analogy Ch.1, Series Ch.2, Puzzles Ch.9)
-- English: Use SP Bakshi "Objective General English" (Synonyms, Antonyms, Fill in the Blanks, Error Spotting, One-Word Substitution, Idioms & Phrases, Reading Comprehension) and SSC CGL PYQ patterns
-- General Awareness: Use Lucent's "General Knowledge" (History, Geography, Polity, Economy, Science) and current affairs 2023–24 from Testbook/Adda247
-
-Style: ${yrHint}, ${dfHint}. Make it fun and interesting — include trick hints in explanations.
-
-Return ONLY valid JSON array, no markdown:
-[{"section":"qa|ri|en|ga","source":"R.S. Aggarwal Ch.10|Rakesh Yadav|M.K. Pandey Ch.4|SP Bakshi|Lucent GK|PYQ SSC CGL 2023|Testbook","year":"SSC CGL 2023 or Practice","topic":"specific topic","difficulty":"easy|medium|hard","question":"question text","options":["A) opt1","B) opt2","C) opt3","D) opt4"],"correct":0,"explanation":"Clear step-by-step explanation","trick":"Rakesh Yadav shortcut or SP Bakshi grammar rule or MK Pandey pattern tip (1-2 sentences max)"}]
-
-Distribute evenly across sections. Every question must feel authentic and exam-ready.`;
-
-  try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-api-key': ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01' },
-      body: JSON.stringify({ model: 'claude-sonnet-4-6', max_tokens: 8000, messages: [{ role: 'user', content: prompt }] })
-    });
-    const data = await res.json();
-    const raw   = data.content.map(b => b.text || '').join('');
-    const clean = raw.replace(/```json|```/g, '').trim();
-    const js    = clean.indexOf('['), je = clean.lastIndexOf(']') + 1;
-    G.questions = JSON.parse(clean.substring(js, je));
-    G.answers   = new Array(G.questions.length).fill(null);
-    if (isMock) { G.mockSecIdx = 0; G.mockSecLeft = 900; G.mockScore = 0; startMockSecTimer(); }
-    else if (G.mode === 'exam') { G.totalSecs = G.qc * 72; G.secsLeft = G.totalSecs; startExamTimer(); }
-    updateStreak();
-    renderQ(isMock);
-  } catch (e) {
-    const el = document.getElementById(isMock ? 'mock-quiz' : 'quiz-inner');
-    if (el) el.innerHTML = '<div style="text-align:center;padding:2rem;color:var(--text-danger);font-size:13px">Could not load questions. Check your API key and try again.</div><button class="bsec" style="margin:1rem auto;display:block" onclick="goTab(\'practice\')">Go back</button>';
+function startPrac(){
+  G.qn=parseInt(document.getElementById('qn').value)||20;
+  G.df=document.getElementById('df').value;
+  G.tp=document.getElementById('tp').value;
+  G.questions=getQs(G.secs,G.qn,G.df,G.tp);
+  if(!G.questions.length){
+    alert('No questions match this filter. Try different settings.');return;
   }
+  G.answers=new Array(G.questions.length).fill(null);G.cur=0;
+  if(G.mode==='exam'){G.totSec=G.questions.length*72;G.secLeft=G.totSec;startExamTimer();}
+  updStreak();
+  document.getElementById('prac-home').style.display='none';
+  go('quiz');renderQ(false);
 }
 
-/* =====================================================================
-   STREAK + TIMERS
-   ===================================================================== */
-function updateStreak() {
-  const today = new Date().toDateString();
-  if (G.lastDate === today) return;
-  const yest = new Date(Date.now() - 86400000).toDateString();
-  G.streak   = G.lastDate === yest ? G.streak + 1 : 1;
-  G.lastDate = today;
+/* ─────────────────── MOCK ─────────────────── */
+function startMock(){
+  const all=getQs(['qa','ri','en','ga'],100,'all','all');
+  if(all.length<10){alert('Add more questions to questions.js before running a full mock!');return;}
+  G.questions=all;G.answers=new Array(all.length).fill(null);
+  G.cur=0;G.mIdx=0;G.mScore=0;G.mode='exam';
+  document.getElementById('mock-home').style.display='none';
+  document.getElementById('mock-quiz').style.display='block';
+  go('quiz');startMockSecTimer();renderQ(true);
 }
 
-function startExamTimer() {
-  clearInterval(G.timer);
-  updateTimerEl();
-  G.timer = setInterval(() => { G.secsLeft--; updateTimerEl(); if (G.secsLeft <= 0) { clearInterval(G.timer); finishSession(); } }, 1000);
+/* ─────────────────── TIMERS ─────────────────── */
+function updStreak(){
+  const today=new Date().toDateString();
+  if(G.lastDate===today)return;
+  const y=new Date(Date.now()-86400000).toDateString();
+  G.streak=G.lastDate===y?G.streak+1:1;G.lastDate=today;
 }
-function updateTimerEl() {
-  const el = document.getElementById('etimer'); if (!el) return;
-  const m = Math.floor(G.secsLeft / 60), s = G.secsLeft % 60;
-  el.textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-  const b = el.closest('.tbox'); if (b) b.className = 'tbox' + (G.secsLeft <= 60 ? ' danger' : G.secsLeft <= 180 ? ' warn' : '');
+function startExamTimer(){
+  clearInterval(G.timer);updTimerEl();
+  G.timer=setInterval(()=>{G.secLeft--;updTimerEl();if(G.secLeft<=0){clearInterval(G.timer);finishSess();}},1000);
+}
+function updTimerEl(){
+  const el=document.getElementById('etimer');if(!el)return;
+  const m=Math.floor(G.secLeft/60),s=G.secLeft%60;
+  el.textContent=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  const b=el.closest('.tbox');if(b)b.className='tbox'+(G.secLeft<=60?' danger':G.secLeft<=180?' warn':'');
+}
+function startMockSecTimer(){
+  clearInterval(G.mTimer);G.mSecLeft=900;updMTimerEl();
+  G.mTimer=setInterval(()=>{G.mSecLeft--;updMTimerEl();if(G.mSecLeft<=0){clearInterval(G.mTimer);G.mIdx<3?advMock():finishMock();}},1000);
+}
+function updMTimerEl(){
+  const el=document.getElementById('mktimer');if(!el)return;
+  const m=Math.floor(G.mSecLeft/60),s=G.mSecLeft%60;
+  el.textContent=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  const b=el.closest('.tbox');if(b)b.className='tbox'+(G.mSecLeft<=60?' danger':G.mSecLeft<=180?' warn':'');
+}
+function advMock(){
+  G.mIdx++;
+  const ns=['qa','ri','en','ga'][G.mIdx];
+  const fi=G.questions.findIndex(q=>q.section===ns);
+  if(fi>=0)G.cur=fi;
+  startMockSecTimer();renderQ(true);
 }
 
-function startMockSecTimer() {
-  clearInterval(G.mockSecTimer); G.mockSecLeft = 900; updateMockTimerEl();
-  G.mockSecTimer = setInterval(() => { G.mockSecLeft--; updateMockTimerEl(); if (G.mockSecLeft <= 0) { clearInterval(G.mockSecTimer); G.mockSecIdx < 3 ? advanceMockSec() : finishMock(); } }, 1000);
-}
-function updateMockTimerEl() {
-  const el = document.getElementById('mktimer'); if (!el) return;
-  const m = Math.floor(G.mockSecLeft / 60), s = G.mockSecLeft % 60;
-  el.textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-  const b = el.closest('.tbox'); if (b) b.className = 'tbox' + (G.mockSecLeft <= 60 ? ' danger' : G.mockSecLeft <= 180 ? ' warn' : '');
-}
-function advanceMockSec() {
-  G.mockSecIdx++;
-  const nextSec = ['qa','ri','en','ga'][G.mockSecIdx];
-  const firstQIdx = G.questions.findIndex(q => q.section === nextSec);
-  G.cur = firstQIdx >= 0 ? firstQIdx : G.cur + 1;
-  startMockSecTimer(); renderQ(true);
-}
-
-/* =====================================================================
-   RENDER QUESTION
-   ===================================================================== */
-function renderQ(isMock) {
-  const qs = G.questions, cur = G.cur;
-  if (cur >= qs.length) { isMock ? finishMock() : finishSession(); return; }
-  const q = qs[cur];
-  const pct   = Math.round(cur / qs.length * 100);
-  const bmed  = G.bookmarks.some(b => b.question === q.question);
-  const letters = ['A','B','C','D'];
-  const secKeys = ['qa','ri','en','ga'];
-
-  const srcClass = q.source && q.source.includes('Aggarwal') ? 'src-rsa'
-    : q.source && q.source.includes('Rakesh') ? 'src-ry'
-    : q.source && q.source.includes('Pandey') ? 'src-mkp'
-    : q.source && q.source.includes('Bakshi') ? 'src-spb'
-    : q.source && q.source.includes('Lucent') ? 'src-luc'
-    : q.source && (q.source.includes('PYQ') || q.source.includes('SSC CGL')) ? 'src-pyq'
-    : 'src-tb';
-
-  const timerHtml    = G.mode === 'exam' && !isMock ? `<div class="tbox"><i class="ti ti-clock" style="font-size:13px"></i><span id="etimer">--:--</span></div>` : '';
-  const mockTimerHtml = isMock ? `<div class="tbox"><i class="ti ti-clock" style="font-size:13px"></i><span id="mktimer">15:00</span></div>` : '';
-  const scoreHtml    = isMock ? `<span style="font-size:12px;font-weight:500;color:${G.mockScore>=0?'var(--text-success)':'var(--text-danger)'}">${G.mockScore.toFixed(1)} marks</span>` : '';
-  const secTabsHtml  = isMock ? `<div class="sec-lock-tabs">${secKeys.map((s,i)=>`<div class="slt ${i===G.mockSecIdx?'active-s':i<G.mockSecIdx?'done-s':''}">${SM[s].n}${i<G.mockSecIdx?' ✓':''}</div>`).join('')}</div>` : '';
-  const negHtml      = (isMock || G.mode === 'exam') ? `<div class="neg-hint"><i class="ti ti-alert-circle" style="font-size:12px;vertical-align:-1px;margin-right:4px"></i>Wrong = −0.5 marks. Skip if unsure.</div>` : '';
-
-  const html = `
+/* ─────────────────── RENDER QUESTION ─────────────────── */
+function renderQ(isMock){
+  const qs=G.questions,cur=G.cur;
+  if(cur>=qs.length){isMock?finishMock():finishSess();return;}
+  const q=qs[cur],pct=Math.round(cur/qs.length*100);
+  const bmd=G.bookmarks.some(b=>b.question===q.question);
+  const L=['A','B','C','D'];
+  const sc=getSC(q.source);
+  const secKeys=['qa','ri','en','ga'];
+  const tH=G.mode==='exam'&&!isMock?`<div class="tbox"><i class="ti ti-clock" style="font-size:13px"></i><span id="etimer">--:--</span></div>`:'';
+  const mH=isMock?`<div class="tbox"><i class="ti ti-clock" style="font-size:13px"></i><span id="mktimer">15:00</span></div>`:'';
+  const sH=isMock?`<span style="font-size:12px;font-weight:500;color:${G.mScore>=0?'var(--tg)':'var(--td)'}">${G.mScore.toFixed(1)} marks</span>`:'';
+  const stH=isMock?`<div class="slt">${secKeys.map((s,i)=>`<div class="sl2 ${i===G.mIdx?'act':i<G.mIdx?'dn':''}">${SM[s].n}${i<G.mIdx?' ✓':''}</div>`).join('')}</div>`:'';
+  const negH=(isMock||G.mode==='exam')?`<div class="neg"><i class="ti ti-alert-circle" style="font-size:12px;vertical-align:-1px;margin-right:4px"></i>Wrong = −0.5 marks. Skip if not sure.</div>`:'';
+  const html=`
     <div class="qhdr">
-      <div class="qmeta">
-        <span class="qnum">${cur+1} / ${qs.length}</span>
-        <span class="stag src-pill ${SM[q.section]?.sc||'src-rsa'}">${SM[q.section]?.n||'Quant'}</span>
-        ${scoreHtml}
-      </div>
-      <div style="display:flex;gap:6px;align-items:center">${timerHtml}${mockTimerHtml}</div>
+      <div class="qmeta"><span class="qnum">${cur+1} / ${qs.length}</span><span class="stag src ${SM[q.section]?.sc||'rsa'}">${SM[q.section]?.n||'Quant'}</span>${sH}</div>
+      <div style="display:flex;gap:6px;align-items:center">${tH}${mH}</div>
     </div>
-    ${secTabsHtml ? `<div style="margin-bottom:8px">${secTabsHtml}</div>` : ''}
+    ${stH}
     <div class="pbar"><div class="pfill" style="width:${pct}%"></div></div>
-    <div class="confetti-msg" id="conf-msg">✓ Correct! +10 XP earned</div>
+    <div class="conf" id="conf">✓ Correct! +10 XP</div>
     <div class="qcard">
-      <div class="qmeta-row">
-        <span class="src-pill ${srcClass}">${q.source||'PYQ'}</span>
-        <span class="src-pill src-pyq">${q.year||'PYQ'}</span>
-        <span class="src-pill ${q.difficulty==='hard'?'src-tb':q.difficulty==='easy'?'src-spb':'src-mkp'}">${q.difficulty||'medium'}</span>
-        <button class="bm-btn ${bmed?'saved':''}" id="bm-btn" onclick="toggleBM()" aria-label="Bookmark question">
-          <i class="ti ti-bookmark" style="font-size:15px"></i>
-        </button>
+      <div class="qmr">
+        <span class="src ${sc}">${q.source||'PYQ'}</span>
+        <span class="src pyq">${q.year||'PYQ'}</span>
+        <span class="src ${q.difficulty==='hard'?'tb':q.difficulty==='easy'?'spb':'mkp'}">${q.difficulty||'medium'}</span>
+        <button class="bmb ${bmd?'sv':''}" id="bmbtn" onclick="togBM()"><i class="ti ti-bookmark" style="font-size:15px"></i></button>
       </div>
       <div class="qtxt">${q.question}</div>
     </div>
-    <div class="opts">
-      ${q.options.map((o,i) => `<button class="opt" id="opt${i}" onclick="pickAns(${i},${isMock})"><span class="opt-l">${letters[i]})</span><span>${o.replace(/^[A-D]\)\s*/,'')}</span></button>`).join('')}
-    </div>
+    <div class="opts">${q.options.map((o,i)=>`<button class="opt" id="o${i}" onclick="pick(${i},${isMock})"><span class="optl">${L[i]})</span><span>${o.replace(/^[A-D]\)\s*/,'')}</span></button>`).join('')}</div>
     <div id="sol-area"></div>
-    ${negHtml}
+    ${negH}
     <div class="qacts">
-      ${cur > 0 ? `<button class="bsec" onclick="prevQ(${isMock})">← Prev</button>` : ''}
+      ${cur>0?`<button class="bsec" onclick="prevQ(${isMock})">← Prev</button>`:''}
       <button class="bsec" onclick="skipQ(${isMock})">Skip</button>
-      <button class="bpri" onclick="nextQ(${isMock})">${cur === qs.length-1 ? 'Finish' : 'Next →'}</button>
-    </div>
-  `;
-
-  const c = document.getElementById(isMock ? 'mock-quiz' : 'quiz-inner');
-  if (c) { c.innerHTML = html; if (G.mode === 'exam' && !isMock) updateTimerEl(); if (isMock) updateMockTimerEl(); }
-  if (G.answers[cur] !== null) restoreQ(isMock);
+      <button class="bpri" onclick="nextQ(${isMock})">${cur===qs.length-1?'Finish':'Next →'}</button>
+    </div>`;
+  const c=document.getElementById(isMock?'mock-quiz':'quiz-inner');
+  if(c){c.innerHTML=html;if(G.mode==='exam'&&!isMock)updTimerEl();if(isMock)updMTimerEl();}
+  if(G.answers[cur]!==null)restoreQ(isMock);
 }
 
-function toggleBM() {
-  const q = G.questions[G.cur];
-  const i = G.bookmarks.findIndex(b => b.question === q.question);
-  if (i > -1) G.bookmarks.splice(i, 1); else G.bookmarks.push({...q});
-  const b = document.getElementById('bm-btn');
-  if (b) b.classList.toggle('saved', G.bookmarks.some(b2 => b2.question === q.question));
+function togBM(){
+  const q=G.questions[G.cur];
+  const i=G.bookmarks.findIndex(b=>b.question===q.question);
+  if(i>-1)G.bookmarks.splice(i,1);else G.bookmarks.push({...q});
+  const b=document.getElementById('bmbtn');
+  if(b)b.classList.toggle('sv',G.bookmarks.some(x=>x.question===q.question));
 }
-
-function pickAns(idx, isMock) {
-  if (G.answers[G.cur] !== null) return;
-  G.answers[G.cur] = idx;
-  const q = G.questions[G.cur], ok = idx === q.correct;
-  document.querySelectorAll('.opt').forEach((b, i) => {
-    b.disabled = true;
-    if (i === q.correct) b.classList.add('correct');
-    else if (i === idx && !ok) b.classList.add('wrong');
+function pick(idx,isMock){
+  if(G.answers[G.cur]!==null)return;
+  G.answers[G.cur]=idx;
+  const q=G.questions[G.cur],ok=idx===q.correct;
+  document.querySelectorAll('.opt').forEach((b,i)=>{
+    b.disabled=true;
+    if(i===q.correct)b.classList.add('correct');
+    else if(i===idx&&!ok)b.classList.add('wrong');
   });
-  if (ok) {
-    G.xp += 10;
-    document.getElementById('xp-val').textContent = G.xp;
-    const cm = document.getElementById('conf-msg');
-    if (cm) { cm.style.display = 'block'; setTimeout(() => { cm.style.display = 'none'; }, 1400); }
+  if(ok){
+    G.xp+=10;syncXP();
+    const cm=document.getElementById('conf');
+    if(cm){cm.style.display='block';setTimeout(()=>{cm.style.display='none';},1400);}
   }
-  if (isMock) G.mockScore += (ok ? 2 : -0.5);
-  if (!isMock && G.mode === 'study') showSolution(q);
+  if(isMock)G.mScore+=(ok?2:-0.5);
+  if(!isMock&&G.mode==='study')showSol(q);
 }
-
-function showSolution(q) {
-  const sa = document.getElementById('sol-area'); if (!sa) return;
-  sa.innerHTML = `<div class="sol-box">
+function showSol(q){
+  const sa=document.getElementById('sol-area');if(!sa)return;
+  sa.innerHTML=`<div class="sol">
     <div class="sol-lbl">Explanation</div>
     <div class="sol-src">Source: ${q.source||''}</div>
     <div class="sol-txt">${q.explanation}</div>
-    ${q.trick ? `<div class="trick-box"><div class="trick-lbl">Shortcut / trick</div><div class="trick-txt">${q.trick}</div></div>` : ''}
+    ${q.trick?`<div class="trick"><div class="trick-lbl">Shortcut / trick</div><div class="trick-txt">${q.trick}</div></div>`:''}
   </div>`;
 }
-
-function restoreQ(isMock) {
-  const q = G.questions[G.cur], ua = G.answers[G.cur];
-  document.querySelectorAll('.opt').forEach((b, i) => {
-    b.disabled = true;
-    if (i === q.correct) b.classList.add('correct');
-    else if (i === ua && ua !== q.correct) b.classList.add('wrong');
+function restoreQ(isMock){
+  const q=G.questions[G.cur],ua=G.answers[G.cur];
+  document.querySelectorAll('.opt').forEach((b,i)=>{
+    b.disabled=true;
+    if(i===q.correct)b.classList.add('correct');
+    else if(i===ua&&ua!==q.correct)b.classList.add('wrong');
   });
-  if (!isMock && G.mode === 'study') showSolution(q);
+  if(!isMock&&G.mode==='study')showSol(q);
 }
+function prevQ(im){if(G.cur>0){G.cur--;renderQ(im);}}
+function skipQ(im){if(G.answers[G.cur]===null)G.answers[G.cur]=-1;nextQ(im);}
+function nextQ(im){if(G.cur<G.questions.length-1){G.cur++;renderQ(im);}else{im?finishMock():finishSess();}}
 
-function prevQ(im) { if (G.cur > 0) { G.cur--; renderQ(im); } }
-function skipQ(im) { if (G.answers[G.cur] === null) G.answers[G.cur] = -1; nextQ(im); }
-function nextQ(im) { if (G.cur < G.questions.length - 1) { G.cur++; renderQ(im); } else { im ? finishMock() : finishSession(); } }
-
-/* =====================================================================
-   FINISH / RESULTS
-   ===================================================================== */
-function calcResults() {
-  const qs = G.questions, ans = G.answers;
-  const correct = ans.filter((a,i) => a === qs[i].correct).length;
-  const wrong   = ans.filter((a,i) => a !== null && a !== -1 && a !== qs[i].correct).length;
-  const skipped = ans.filter(a => a === null || a === -1).length;
-  qs.forEach((q,i) => { if (ans[i] !== null && ans[i] !== -1) { G.bySection[q.section].t++; if (ans[i] === q.correct) G.bySection[q.section].a++; } });
-  G.totalAttempted += qs.length - skipped;
-  G.totalCorrect   += correct;
-  G.totalSessions++;
-  G.history.push({ pct: Math.round(correct / qs.length * 100), s: G.totalSessions });
-  return { correct, wrong, skipped, pct: Math.round(correct / qs.length * 100) };
+/* ─────────────────── RESULTS ─────────────────── */
+function calcR(){
+  const qs=G.questions,ans=G.answers;
+  const cor=ans.filter((a,i)=>a===qs[i].correct).length;
+  const wrg=ans.filter((a,i)=>a!==null&&a!==-1&&a!==qs[i].correct).length;
+  const skp=ans.filter(a=>a===null||a===-1).length;
+  qs.forEach((q,i)=>{
+    if(ans[i]!==null&&ans[i]!==-1){
+      G.byS[q.section].t++;
+      if(ans[i]===q.correct)G.byS[q.section].a++;
+    }
+  });
+  G.totAtt+=qs.length-skp;G.totCor+=cor;G.sessions++;
+  G.hist.push({p:Math.round(cor/qs.length*100),s:G.sessions});
+  return{cor,wrg,skp,pct:Math.round(cor/qs.length*100)};
 }
-
-function finishSession() {
+function finishSess(){
   clearInterval(G.timer);
-  const r = calcResults();
-  const bonus = r.pct >= 80 ? 50 : r.pct >= 65 ? 25 : 0; G.xp += bonus;
-  showResult(r, null, bonus);
+  const r=calcR();
+  const b=r.pct>=80?50:r.pct>=65?25:0;G.xp+=b;updStreak();showResult(r,null,b);
 }
-function finishMock() {
-  clearInterval(G.mockSecTimer);
-  const r = calcResults();
-  const score = r.correct * 2 - r.wrong * 0.5;
-  const bonus = r.pct >= 80 ? 100 : r.pct >= 65 ? 50 : 10; G.xp += bonus;
-  document.getElementById('mock-home').style.display = 'block';
-  document.getElementById('mock-quiz').style.display = 'none';
-  showResult(r, score, bonus);
+function finishMock(){
+  clearInterval(G.mTimer);
+  const r=calcR();
+  const sc=r.cor*2-r.wrg*0.5;
+  const b=r.pct>=80?100:r.pct>=65?50:10;G.xp+=b;updStreak();
+  document.getElementById('mock-home').style.display='block';
+  document.getElementById('mock-quiz').style.display='none';
+  showResult(r,sc,b);
 }
-
-function showResult(r, score, bonus) {
-  const grade = r.pct >= 80 ? 'Excellent — above cut-off' : r.pct >= 65 ? 'Good — near cut-off' : r.pct >= 50 ? 'Average — needs improvement' : 'Below cut-off — keep practicing';
-  showScreen('result-screen');
-  document.getElementById('result-inner').innerHTML = `
-    <div class="result-hero">
-      <div class="result-pct">${r.pct}%</div>
-      <div class="result-sub">${r.correct} correct · ${r.wrong} wrong · ${r.skipped} skipped</div>
-      <div class="result-grade" style="color:${r.pct>=65?'var(--text-success)':'var(--text-danger)'}">${grade}</div>
-      ${score !== null ? `<div style="font-size:13px;color:var(--text-muted);margin-top:4px">Marks: ${score.toFixed(1)} / ${G.questions.length*2}</div>` : ''}
-      ${bonus > 0 ? `<div style="font-size:12px;color:var(--text-warning);margin-top:6px;font-weight:500">+${bonus} XP earned this session</div>` : ''}
+function showResult(r,score,bonus){
+  const grade=r.pct>=80?'Excellent — above cut-off':r.pct>=65?'Good — near cut-off':r.pct>=50?'Average — needs improvement':'Below cut-off — keep practicing';
+  go('result');syncXP();
+  document.getElementById('result-inner').innerHTML=`
+    <div class="rh">
+      <div class="rpct">${r.pct}%</div>
+      <div class="rsub">${r.cor} correct · ${r.wrg} wrong · ${r.skp} skipped</div>
+      <div class="rg" style="color:${r.pct>=65?'var(--tg)':'var(--td)'}">${grade}</div>
+      ${score!==null?`<div style="font-size:13px;color:var(--tm);margin-top:4px">Marks: ${score.toFixed(1)} / ${G.questions.length*2}</div>`:''}
+      ${bonus>0?`<div style="font-size:12px;color:var(--tw);margin-top:6px;font-weight:500">+${bonus} XP earned this session</div>`:''}
     </div>
-    <div class="rgrid">
-      <div class="rc2"><div class="rc2-n" style="color:var(--text-success)">${r.correct}</div><div class="rc2-l">Correct</div></div>
-      <div class="rc2"><div class="rc2-n" style="color:var(--text-danger)">${r.wrong}</div><div class="rc2-l">Wrong</div></div>
-      <div class="rc2"><div class="rc2-n" style="color:var(--text-warning)">${r.skipped}</div><div class="rc2-l">Skipped</div></div>
-      <div class="rc2"><div class="rc2-n">${G.xp}</div><div class="rc2-l">Total XP</div></div>
+    <div class="g4">
+      <div class="rc2"><div class="rc2n" style="color:var(--tg)">${r.cor}</div><div class="rc2l">Correct</div></div>
+      <div class="rc2"><div class="rc2n" style="color:var(--td)">${r.wrg}</div><div class="rc2l">Wrong</div></div>
+      <div class="rc2"><div class="rc2n" style="color:var(--tw)">${r.skp}</div><div class="rc2l">Skipped</div></div>
+      <div class="rc2"><div class="rc2n">${G.xp}</div><div class="rc2l">Total XP</div></div>
     </div>
     <div class="racts">
-      <button class="bsec" onclick="goTab('dash')">Dashboard</button>
-      <button class="bsec" onclick="goTab('practice')">New session</button>
-      <button class="bpri" onclick="showReview()">Review answers</button>
+      <button class="bsec" onclick="go('dash')">Dashboard</button>
+      <button class="bsec" onclick="go('practice')">New session</button>
+      <button class="bpri" onclick="toggleRev()">Review answers</button>
     </div>
-    <div id="rev-area"></div>
-  `;
+    <div id="rev-area"></div>`;
 }
-
-function showReview() {
-  const ra = document.getElementById('rev-area');
-  if (ra.innerHTML) { ra.innerHTML = ''; return; }
-  ra.innerHTML = '<div style="font-size:13px;font-weight:500;margin:0.75rem 0 0.5rem">Answer review</div>' +
-    G.questions.map((q,i) => {
-      const ua = G.answers[i], ok = ua === q.correct, skip = ua === null || ua === -1;
-      const cTxt = q.options[q.correct]?.replace(/^[A-D]\)\s*/,'');
-      const uTxt = !skip ? q.options[ua]?.replace(/^[A-D]\)\s*/,'') : 'Skipped';
-      return `<div class="rev-item">
-        <div class="rev-meta">Q${i+1} · ${SM[q.section]?.n} · ${q.source||''} · ${q.topic||''}</div>
+function toggleRev(){
+  const ra=document.getElementById('rev-area');
+  if(ra.innerHTML){ra.innerHTML='';return;}
+  ra.innerHTML='<div style="font-size:13px;font-weight:500;margin:.75rem 0 .5rem">Answer review</div>'+
+    G.questions.map((q,i)=>{
+      const ua=G.answers[i],ok=ua===q.correct,skip=ua===null||ua===-1;
+      const ct=q.options[q.correct]?.replace(/^[A-D]\)\s*/,'');
+      const ut=!skip?q.options[ua]?.replace(/^[A-D]\)\s*/,''):'Skipped';
+      return`<div class="rev-it">
+        <div class="rev-m">Q${i+1} · ${SM[q.section]?.n} · ${q.source||''} · ${q.topic||''}</div>
         <div class="rev-q">${q.question}</div>
-        <div class="rev-ans"><span class="ok">✓ ${cTxt}</span>${!ok?`<span class="nok">✗ ${uTxt}</span>`:''}</div>
-        <div class="rev-exp">${q.explanation}${q.trick ? ` | Trick: ${q.trick}` : ''}</div>
+        <div class="rev-a"><span class="ok">✓ ${ct}</span>${!ok?`<span class="nok">✗ ${ut}</span>`:''}</div>
+        <div class="rev-e">${q.explanation}${q.trick?' | Trick: '+q.trick:''}</div>
       </div>`;
     }).join('');
 }
 
-function startFullMock() {
-  showScreen('mock-screen');
-  G.secs = ['qa','ri','en','ga']; G.qc = 100; G.mode = 'exam'; G.mockScore = 0;
-  loadQuestions(true);
-}
-
-/* =====================================================================
-   BOOKMARKS
-   ===================================================================== */
-function renderSaved() {
-  const sl = document.getElementById('saved-list'); if (!sl) return;
-  if (G.bookmarks.length === 0) {
-    sl.innerHTML = '<div class="bm-empty"><i class="ti ti-bookmark" style="font-size:28px;display:block;margin-bottom:8px"></i>No saved questions yet.<br>Tap the bookmark icon while practicing.</div>';
+/* ─────────────────── BOOKMARKS ─────────────────── */
+function renderSaved(){
+  const sl=document.getElementById('saved-list');if(!sl)return;
+  if(!G.bookmarks.length){
+    sl.innerHTML='<div class="empty"><i class="ti ti-bookmark" style="font-size:28px;display:block;margin-bottom:8px"></i>No saved questions yet.<br>Tap the bookmark icon while practicing.</div>';
     return;
   }
-  sl.innerHTML = G.bookmarks.map((q,i) => `<div class="bm-item">
-    <div class="bm-meta">${SM[q.section]?.n||''} · ${q.source||''} · ${q.year||''} · ${q.topic||''}</div>
-    <div class="bm-q">${q.question}</div>
-    <div class="bm-ans">✓ ${q.options[q.correct]?.replace(/^[A-D]\)\s*/,'')}</div>
-    ${q.trick ? `<div class="bm-exp">Trick: ${q.trick}</div>` : ''}
-    <div class="bm-exp">${q.explanation}</div>
-    <button class="bm-rm" onclick="removeBM(${i})">Remove</button>
-  </div>`).join('');
+  sl.innerHTML=G.bookmarks.map((q,i)=>`
+    <div class="card">
+      <div style="font-size:10px;color:var(--tm);margin-bottom:4px">${SM[q.section]?.n||''} · ${q.source||''} · ${q.topic||''}</div>
+      <div style="font-size:13px;margin-bottom:5px;line-height:1.5">${q.question}</div>
+      <div style="font-size:12px;color:var(--tg);margin-bottom:4px">✓ ${q.options[q.correct]?.replace(/^[A-D]\)\s*/,'')}</div>
+      ${q.trick?`<div style="font-size:11px;color:var(--tm)">Trick: ${q.trick}</div>`:''}
+      <div style="font-size:11px;color:var(--tm);margin-top:4px;line-height:1.5">${q.explanation}</div>
+      <button class="btn-rm" onclick="rmBM(${i})">Remove</button>
+    </div>`).join('');
 }
-function removeBM(i) { G.bookmarks.splice(i, 1); renderSaved(); }
+function rmBM(i){G.bookmarks.splice(i,1);renderSaved();}
 
-/* =====================================================================
-   TOOLS
-   ===================================================================== */
-const VOCAB = [
-  { w:'Ephemeral',  t:'adj', m:'Lasting a very short time; transitory',                     ex:'The ephemeral nature of fame is well documented.',         src:'SP Bakshi Ch.3 — Antonym: Permanent' },
-  { w:'Loquacious', t:'adj', m:'Excessively talkative',                                     ex:'The loquacious candidate answered every question at length.', src:'SP Bakshi Ch.5 — Synonym: Garrulous, Voluble' },
-  { w:'Perfidious', t:'adj', m:'Deceitful and untrustworthy; treacherous',                  ex:'His perfidious allies betrayed him at the crucial moment.',  src:'SP Bakshi — Antonym: Faithful, Loyal' },
-  { w:'Sagacious',  t:'adj', m:'Having good judgement; shrewd and wise',                    ex:'The sagacious minister guided the kingdom through the crisis.', src:'SP Bakshi — Synonym: Astute, Shrewd' },
-  { w:'Laconic',    t:'adj', m:'Using very few words; brief and concise',                   ex:'His laconic reply of two words surprised the interviewers.',  src:'SP Bakshi Ch.7 — Antonym: Verbose' },
-  { w:'Obsequious', t:'adj', m:'Excessively eager to please; servile',                      ex:'The obsequious assistant agreed with everything his boss said.', src:'SP Bakshi — Synonym: Sycophantic' },
-  { w:'Equanimity', t:'n',   m:'Mental calmness, especially in difficult situations',       ex:'She faced the adversity with remarkable equanimity.',         src:'SP Bakshi — Antonym: Agitation' },
-  { w:'Mendacious', t:'adj', m:'Not telling the truth; lying',                              ex:'The mendacious witness was caught contradicting himself.',    src:'SP Bakshi Ch.4 — Antonym: Veracious' },
-  { w:'Inveterate', t:'adj', m:'Having a deeply established habit unlikely to change',      ex:'He was an inveterate gambler despite heavy losses.',          src:'SP Bakshi — Synonym: Habitual, Chronic' },
-  { w:'Vicarious',  t:'adj', m:'Experienced in the imagination through another person',     ex:'She got vicarious pleasure watching her students succeed.',   src:'SP Bakshi — SSC CGL 2022 PYQ' }
+/* ─────────────────── TOOLS ─────────────────── */
+const VOCAB=[
+  {w:'Ephemeral',t:'adj',m:'Lasting a very short time; transitory',ex:'The ephemeral nature of fame surprises many.',src:'SP Bakshi Ch.3 — Antonym: Permanent, Eternal'},
+  {w:'Loquacious',t:'adj',m:'Excessively talkative',ex:'The loquacious host kept the audience entertained.',src:'SP Bakshi Ch.5 — Synonym: Garrulous, Voluble'},
+  {w:'Perfidious',t:'adj',m:'Deceitful and untrustworthy; treacherous',ex:'His perfidious allies betrayed him at the critical moment.',src:'SP Bakshi — Antonym: Faithful, Loyal'},
+  {w:'Sagacious',t:'adj',m:'Having good judgement; shrewd and wise',ex:'The sagacious minister guided the kingdom well.',src:'SP Bakshi — Synonym: Astute, Shrewd'},
+  {w:'Laconic',t:'adj',m:'Using very few words; brief and concise',ex:'His laconic reply surprised the verbose interviewer.',src:'SP Bakshi Ch.7 — Antonym: Verbose, Loquacious'},
+  {w:'Obsequious',t:'adj',m:'Excessively eager to please; servile',ex:'The obsequious assistant agreed with everything.',src:'SP Bakshi — Synonym: Sycophantic'},
+  {w:'Equanimity',t:'n',m:'Mental calmness, especially in difficult situations',ex:'She faced the adversity with remarkable equanimity.',src:'SP Bakshi — Antonym: Agitation, Anxiety'},
+  {w:'Mendacious',t:'adj',m:'Not telling the truth; lying',ex:'The mendacious witness contradicted himself.',src:'SP Bakshi Ch.4 — Antonym: Veracious, Truthful'},
+  {w:'Alacrity',t:'n',m:'Brisk and cheerful readiness; eagerness',ex:'She accepted the challenge with great alacrity.',src:'SP Bakshi — Synonym: Eagerness, Zeal'},
+  {w:'Clandestine',t:'adj',m:'Done in secret; illicit',ex:'The spies held clandestine meetings at night.',src:'SP Bakshi — Synonym: Covert, Furtive. Antonym: Open'},
+  {w:'Ameliorate',t:'v',m:'To make something bad better; to improve',ex:'Efforts were made to ameliorate living conditions.',src:'SP Bakshi — Synonym: Improve. Antonym: Exacerbate'},
+  {w:'Turpitude',t:'n',m:'Wickedness or depravity',ex:'He was disqualified for moral turpitude.',src:'SP Bakshi — Antonym: Virtue, Probity'},
+  {w:'Perspicacious',t:'adj',m:'Having ready insight; shrewd',ex:'The perspicacious detective solved the case quickly.',src:'SP Bakshi — Synonym: Astute. Antonym: Obtuse'},
+  {w:'Inveterate',t:'adj',m:'Having a deeply established habit',ex:'He was an inveterate gambler despite heavy losses.',src:'SP Bakshi — Synonym: Habitual, Chronic'},
+  {w:'Vicarious',t:'adj',m:'Experienced through another person',ex:'She got vicarious pleasure from her students\' success.',src:'SP Bakshi — SSC CGL 2022 PYQ'}
 ];
-let vIdx = 0;
+let vIdx=0;
 
-const FORMULAS = [
-  { s: 'Percentage (R.S. Aggarwal Ch.10)', items: [
-    { n: '% change',           eq: '(New − Old) / Old × 100',    src: 'RSA' },
-    { n: 'x% of y',            eq: 'x × y / 100',                src: 'RSA' },
-    { n: 'Two successive %',   eq: 'a + b + (ab / 100)',          src: 'Rakesh Yadav' }
+const FORMULAS=[
+  {s:'Percentage (R.S. Aggarwal Ch.10)',items:[
+    {n:'% change',e:'(New − Old) / Old × 100',src:'rsa'},
+    {n:'Two successive %',e:'a + b + (ab/100)',src:'ry'},
+    {n:'Consumption reduction',e:'[r/(100+r)] × 100',src:'ry'}
   ]},
-  { s: 'Simple & Compound Interest (R.S. Aggarwal Ch.21)', items: [
-    { n: 'Simple Interest',       eq: 'SI = PRT / 100',               src: 'RSA' },
-    { n: 'Compound Interest',     eq: 'CI = P[(1+R/100)ⁿ − 1]',      src: 'RSA' },
-    { n: 'CI vs SI diff (2 yrs)', eq: 'P × (R/100)²',                src: 'Rakesh Yadav' }
+  {s:'Simple & Compound Interest (R.S. Aggarwal Ch.21)',items:[
+    {n:'Simple Interest',e:'SI = PRT / 100',src:'rsa'},
+    {n:'Compound Interest',e:'CI = P[(1+R/100)ⁿ − 1]',src:'rsa'},
+    {n:'CI − SI diff (2 yrs)',e:'P × (R/100)²',src:'ry'}
   ]},
-  { s: 'Time, Speed & Distance (R.S. Aggarwal Ch.17)', items: [
-    { n: 'Speed',                  eq: 'D / T',                     src: 'RSA' },
-    { n: 'Average speed (two trips)', eq: '2S₁S₂ / (S₁ + S₂)',     src: 'Rakesh Yadav' },
-    { n: 'Relative speed (same dir)', eq: 'S₁ − S₂',               src: 'RSA' }
+  {s:'Time, Speed & Distance (R.S. Aggarwal Ch.17)',items:[
+    {n:'Speed',e:'Distance / Time',src:'rsa'},
+    {n:'Average speed (two trips)',e:'2S₁S₂ / (S₁+S₂)',src:'ry'},
+    {n:'m/s → km/h',e:'multiply by 18/5',src:'rsa'}
   ]},
-  { s: 'Profit & Loss (R.S. Aggarwal Ch.11)', items: [
-    { n: 'Profit %',              eq: '(P / CP) × 100',             src: 'RSA' },
-    { n: 'Dishonest dealer gain', eq: '[Error / (True − Error)] × 100', src: 'Rakesh Yadav' },
-    { n: 'Successive discount',   eq: 'a + b − (ab / 100)',         src: 'RSA' }
+  {s:'Profit & Loss (R.S. Aggarwal Ch.11)',items:[
+    {n:'Profit %',e:'(Profit / CP) × 100',src:'rsa'},
+    {n:'Dishonest dealer',e:'[Error/(True−Error)] × 100',src:'ry'},
+    {n:'Same SP, same % gain/loss',e:'Net loss = (x/10)²%',src:'ry'}
+  ]},
+  {s:'Time & Work (R.S. Aggarwal Ch.15)',items:[
+    {n:'A & B together',e:'ab / (a+b) days',src:'ry'},
+    {n:'Efficiency ratio',e:'If A is 2× efficient → A takes half B\'s time',src:'ry'}
   ]}
 ];
 
-const TRICKS = [
-  { t: 'Divisibility (Rakesh Yadav)',     rule: 'Divisibility by 11: subtract alternate digits. If result is 0 or 11, it\'s divisible. E.g. 2783: (2+8)−(7+3) = 0 ✓' },
-  { t: 'Ratio shortcut (Rakesh Yadav)',   rule: 'If A:B = 3:4 and B:C = 5:6, then A:B:C = 15:20:24. Multiply each ratio by the other\'s linking term.' },
-  { t: 'Profit-loss (Rakesh Yadav)',      rule: 'CP unknown? Use: CP = SP × 100 / (100 + P%). If SP = ₹120 at 20% profit → CP = 120 × 100/120 = ₹100.' },
-  { t: 'Time and work (Rakesh Yadav)',    rule: 'A in "a" days, B in "b" days → Together: ab/(a+b) days. Memorise — saves 30 seconds per question.' },
-  { t: 'Average trick (Rakesh Yadav)',    rule: 'If average of n numbers increases by d when x replaces y → x − y = n × d. Fast approach for replacement questions.' },
-  { t: 'Coding-Decoding (M.K. Pandey)',  rule: 'Letter positions: A=1…Z=26. Reverse: A=26…Z=1. Most SSC coding uses +/− patterns. Check 1st and last letter difference first.' },
-  { t: 'Syllogism (M.K. Pandey)',        rule: 'Draw Venn diagrams immediately. "All A are B" → A inside B. "Some A are B" → overlapping. "No A are B" → separate. Never solve in your head.' },
-  { t: 'Blood relations (M.K. Pandey)',  rule: 'Always draw a family tree with ♂/♀ symbols. Never solve blood relation questions mentally — a 10-second diagram saves 60 seconds.' }
+const TRICKS=[
+  {t:'Divisibility by 11 (Rakesh Yadav)',r:'Alternate digit sum: (odd-position digits) − (even-position digits). If 0 or ±11, divisible by 11.'},
+  {t:'Trains — opposite direction',r:'Relative speed = S₁ + S₂. Time = (L₁+L₂) / relative speed. Always convert km/h to m/s (×5/18) first.'},
+  {t:'% reversal trick (Rakesh Yadav)',r:'If price increases by x%, consumption must fall by [x/(100+x)]×100 to keep expenditure same.'},
+  {t:'Coding-Decoding (M.K. Pandey)',r:'Check +1/−1 shift on first 2 letters. If consistent, apply to all. Opposite alphabet: A↔Z, B↔Y, C↔X...'},
+  {t:'Syllogism Venn rule (M.K. Pandey)',r:'"All A→B" = A inside B. "Some A→B" = overlap. "No A→B" = separate. Draw first, then check conclusions.'},
+  {t:"'Only daughter of my mother'",r:"Always means 'myself'. 'His mother is the only daughter of my mother' = 'I am his mother'. Appears every year."},
+  {t:'Average replacement (Rakesh Yadav)',r:'If avg of n numbers changes by d when x replaces y: x − y = n × d. Quick formula.'},
+  {t:'Same SP, same % gain/loss',r:'When two items sold at same SP with same % profit and loss → always net loss = (x/10)²%. E.g. 20% → 4% loss.'}
 ];
 
-const CA = [
-  { d: '2025', h: 'Union Budget 2025-26: No tax up to ₹12 lakh under new income tax regime',                  src: 'Testbook' },
-  { d: '2024', h: 'Paris Olympics 2024: India won 6 medals — 1 Gold (Neeraj Chopra), 1 Silver, 4 Bronze',    src: 'Adda247' },
-  { d: '2024', h: 'New criminal laws BNS, BNSS, BSA replaced IPC, CrPC, Indian Evidence Act (July 1, 2024)', src: 'Career Power' },
-  { d: '2024', h: 'India ranked 39th in Global Innovation Index 2024 (WIPO) — highest ever ranking',          src: 'Testbook' },
-  { d: '2024', h: 'RBI kept repo rate unchanged at 6.5% for the 6th consecutive time in 2024',               src: 'Adda247' },
-  { d: '2025', h: 'ISRO launched PSLV-C60 for Space Docking Experiment (SpaDeX) — a landmark mission',       src: 'Career Power' },
-  { d: '2024', h: 'India became the 4th country to land on the Moon — Chandrayaan-3, Vikram lander (Aug 2023)', src: 'Lucent GK' },
-  { d: '2025', h: 'India\'s GDP growth rate projected at 6.5% for FY2025-26 by IMF',                        src: 'Testbook' },
-  { d: '2024', h: 'PM Surya Ghar Muft Bijli Yojana — 300 units free electricity/month for 1 crore households', src: 'Adda247' },
-  { d: '2024', h: 'India became world\'s 3rd largest economy by GDP (PPP), surpassing Japan',               src: 'Career Power' }
+const CA=[
+  {d:'2025',h:'Union Budget 2025-26: No income tax up to ₹12 lakh under new tax regime',src:'Testbook'},
+  {d:'2024',h:'Paris Olympics 2024: Arshad Nadeem (PAK) Gold, Neeraj Chopra (IND) Silver in Javelin Throw',src:'Adda247'},
+  {d:'2024',h:'BNS, BNSS, BSA replaced IPC, CrPC, Indian Evidence Act from July 1, 2024',src:'Career Power'},
+  {d:'2024',h:'India ranked 39th in Global Innovation Index 2024 (WIPO) — highest ever ranking',src:'Testbook'},
+  {d:'2025',h:'SpaDeX (Space Docking Experiment) — ISRO\'s first space docking mission via PSLV-C60',src:'Career Power'},
+  {d:'2024',h:'RBI kept repo rate unchanged at 6.5% for the 6th consecutive time in 2024',src:'Adda247'},
+  {d:'2025',h:'India\'s GDP growth projected at 6.5% for FY2025-26 by IMF',src:'Testbook'},
+  {d:'2024',h:'India became 3rd largest economy by GDP (PPP), surpassing Japan in 2024',src:'Career Power'},
+  {d:'2024',h:'PM Surya Ghar Muft Bijli Yojana — 300 units free electricity/month for 1 crore households',src:'Adda247'},
+  {d:'2024',h:'New criminal law BNS introduced "community service" as a form of punishment — first time in India',src:'Career Power'}
 ];
 
-function selTool(t) {
-  G.activeTool = t;
-  ['vocab','formula','tricks','ca'].forEach(k => document.getElementById('tt-'+k)?.classList.toggle('on', k === t));
+function setTool(t){
+  G.activeTool=t;
+  const map={v:'vocab',f:'formula',tr:'tricks',ca:'ca'};
+  ['v','f','tr','ca'].forEach(k=>document.getElementById('tt-'+k)?.classList.toggle('on',map[k]===t));
   renderTool();
 }
-
-function renderTool() {
-  const tc = document.getElementById('tool-body'); if (!tc) return;
-  if (G.activeTool === 'vocab') {
-    const v = VOCAB[vIdx % VOCAB.length];
-    tc.innerHTML = `<div class="vocab-card">
-      <div style="font-size:10px;color:var(--text-muted);margin-bottom:4px">Word ${vIdx%VOCAB.length+1} of ${VOCAB.length} · SP Bakshi</div>
-      <div class="vword">${v.w}</div>
-      <div class="vtype">${v.t}</div>
-      <div class="vmean">${v.m}</div>
-      <div class="vex">"${v.ex}"</div>
-      <span class="vsrc src-pill src-spb">${v.src}</span>
-    </div>
-    <div style="display:flex;gap:7px">
-      <button class="bsec" onclick="vIdx--;renderTool()">← Prev</button>
-      <button class="bpri" onclick="vIdx++;renderTool()">Next word →</button>
-    </div>
-    <div style="font-size:12px;color:var(--text-muted);margin-top:1rem;padding:0.75rem;background:var(--surface-1);border-radius:var(--radius)">
-      SSC CGL asks 4–5 synonym/antonym questions and 2–3 one-word substitutions per paper. SP Bakshi's synonym/antonym lists are the #1 source — 70% of vocab questions come directly from these lists.
-    </div>`;
-  } else if (G.activeTool === 'formula') {
-    tc.innerHTML = FORMULAS.map(fs => `<div class="formula-sec">
-      <div class="fs-title">${fs.s}</div>
-      ${fs.items.map(f => `<div class="fi"><div class="fi-name">${f.n}</div><div class="fi-eq">${f.eq}</div><span class="fi-src src-pill ${f.src==='RSA'?'src-rsa':'src-ry'}">${f.src==='RSA'?'R.S.A':'R.Y.'}</span></div>`).join('')}
-    </div>`).join('');
-  } else if (G.activeTool === 'tricks') {
-    tc.innerHTML = `<div style="font-size:12px;color:var(--text-muted);margin-bottom:0.75rem">Shortcuts from Rakesh Yadav and M.K. Pandey — the most exam-relevant tricks.</div>` +
-      TRICKS.map(tr => `<div class="bm-item"><div class="bm-meta">${tr.t}</div><div style="font-size:13px;line-height:1.6">${tr.rule}</div></div>`).join('');
+function renderTool(){
+  const tc=document.getElementById('tool-body');if(!tc)return;
+  if(G.activeTool==='vocab'){
+    const v=VOCAB[vIdx%VOCAB.length];
+    tc.innerHTML=`
+      <div class="vcard">
+        <div style="font-size:10px;color:var(--tm);margin-bottom:4px">Word ${vIdx%VOCAB.length+1} of ${VOCAB.length} · SP Bakshi</div>
+        <div class="vw">${v.w}</div><div class="vt">${v.t}</div>
+        <div class="vm">${v.m}</div>
+        <div class="vex">"${v.ex}"</div>
+        <span class="src spb" style="margin-top:8px">${v.src}</span>
+      </div>
+      <div style="display:flex;gap:7px">
+        <button class="bsec" onclick="vIdx--;renderTool()">← Prev</button>
+        <button class="bpri" onclick="vIdx++;renderTool()">Next word →</button>
+      </div>
+      <div style="font-size:12px;color:var(--tm);margin-top:1rem;padding:.75rem;background:var(--s1);border-radius:var(--r)">
+        SSC CGL asks 4–5 synonym/antonym and 2–3 one-word substitution questions per paper. 70% come directly from SP Bakshi lists.
+      </div>`;
+  } else if(G.activeTool==='formula'){
+    tc.innerHTML=FORMULAS.map(fs=>`
+      <div style="margin-bottom:1rem">
+        <div class="fs-title">${fs.s}</div>
+        ${fs.items.map(f=>`<div class="fi2"><div class="fi2n">${f.n}</div><div class="fi2e">${f.e}</div><span class="src ${f.src}">${f.src==='rsa'?'R.S.A':'R.Y.'}</span></div>`).join('')}
+      </div>`).join('');
+  } else if(G.activeTool==='tricks'){
+    tc.innerHTML=`<div style="font-size:12px;color:var(--tm);margin-bottom:.75rem">Most exam-relevant shortcuts from Rakesh Yadav and M.K. Pandey.</div>`+
+      TRICKS.map(tr=>`<div class="card"><div style="font-size:11px;color:var(--tm);margin-bottom:4px;font-weight:500">${tr.t}</div><div style="font-size:13px;line-height:1.6">${tr.r}</div></div>`).join('');
   } else {
-    tc.innerHTML = `<div style="font-size:12px;color:var(--text-muted);margin-bottom:0.75rem">High-probability CA for GK — sourced from Testbook, Adda247, Career Power monthly capsules.</div>` +
-      CA.map(c => `<div class="bm-item"><div class="bm-meta">${c.d} · <span class="src-pill src-tb" style="font-size:9px;padding:1px 5px;border-radius:6px;font-weight:500;border:0.5px solid">${c.src}</span></div><div style="font-size:13px;line-height:1.5">${c.h}</div></div>`).join('');
+    tc.innerHTML=`<div style="font-size:12px;color:var(--tm);margin-bottom:.75rem">High-probability CA — sourced from Testbook, Adda247, Career Power monthly capsules.</div>`+
+      CA.map(c=>`<div class="card"><div style="font-size:10px;color:var(--tm);margin-bottom:4px">${c.d} · <span class="src tb">${c.src}</span></div><div style="font-size:13px;line-height:1.5">${c.h}</div></div>`).join('');
   }
 }
 
-/* =====================================================================
-   INIT
-   ===================================================================== */
+/* ─────────────────── INIT ─────────────────── */
+refreshTopicFilter();
 renderDash();
 renderTool();
 </script>
